@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "lib",
+    "outDir": "dist",
+    "module": "es2020",
+    "target": "es2017",
+    "moduleResolution": "node",
+    "experimentalDecorators": true
+  },
+  "files": [ "node_modules/vite/client.d.ts" ],
+  "include": [ "lib" ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

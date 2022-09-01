@@ -1,0 +1,44 @@
+{
+  "name": "yabat",
+  "version": "0.0.1",
+  "description": "YABAT - Yet Another Budgeting App/Tool",
+  "author": "Arthur Joppart",
+  "main": "./dist/yabat.umd.js",
+  "license": "EUPL-1.2",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/yabat.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/yabat.es.js",
+      "require": "./dist/yabat.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "npm run build && http-server dist/",
+    "start:vite": "vite serve -m local-development",
+    "build": "shx rm -rf dist && vite build && tsc"
+  },
+  "dependencies": {
+    "@xstate/inspect": "^0.4.1",
+    "lit-element": "^2.5.1",
+    "rx-lit": "1.0.1",
+    "rxjs": "^7.4.0",
+    "uuid": "^8.3.2",
+    "xstate": "4.27.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.44",
+    "@types/uuid": "8.3.0",
+    "http-server": "^14.1.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "shx": "^0.3.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4",
+    "util": "^0.12.4",
+    "vite": "2.2.3",
+    "vite-plugin-rewrite-all": "^0.1.2"
+  }
+}
