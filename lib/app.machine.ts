@@ -1,5 +1,4 @@
-import { login } from './util/login';
-import { logout } from './util/logout';
+import { login, logout } from './util/firebase/authentication';
 import { loadData } from './util/load-data';
 import { MachineConfig, DoneInvokeEvent } from 'xstate';
 import { AppContext } from './app.context';
@@ -29,7 +28,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
               target: AppDataStates.IDLE,
             },
             onError: {
-              actions: log((e) => console.log('Error Loading Data:', e)),
+              actions: log((c, e) => console.log('Error Loading Data:', e)),
               target: AppDataStates.IDLE,
             },
           },
@@ -44,13 +43,13 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
       states: {
         [AppWindowStates.LOGGING_IN]: {
           invoke: {
-            src: (c, e) => login(),
+            src: (c, e) => login(c, e),
             onDone: {
               actions: send(new LoggedInSuccesfullyEvent()),
               target: AppWindowStates.VIEWING_HOME_PAGE,
             },
             onError: {
-              actions: log((e) => console.log('Error Logging In:', e)),
+              actions: log((c, e) => console.log('Error Logging In:', e)),
               target: AppWindowStates.VIEWING_LOGIN_PAGE,
             },
           },

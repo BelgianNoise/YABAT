@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@xstate/inspect": "^0.4.1",
+    "firebase": "^9.9.4",
     "lit-element": "^2.5.1",
     "rx-lit": "1.0.1",
     "rxjs": "^7.4.0",

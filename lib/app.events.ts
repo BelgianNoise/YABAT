@@ -8,7 +8,10 @@ export enum AppEvents {
 
 export class ClickedLogInEvent implements EventObject {
   public type: AppEvents.CLICKED_LOG_IN = AppEvents.CLICKED_LOG_IN;
-  constructor() {}
+  constructor(
+    public email: string,
+    public password: string,
+  ) {}
 }
 
 export class ClickedLogOutEvent implements EventObject {

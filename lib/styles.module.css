@@ -4,3 +4,28 @@ body, html {
   width: 100%;
   height: 100%;
 }
+
+* {
+  font-family: 'Fira Sans';
+}
+
+:root {
+  --colors-black: #000;
+  --colors-grey-dark: #222;
+  --colors-grey-light: #444;
+  --colors-white: #FFF;
+
+  --colors-primary-dark: #047870;
+  --colors-primary-light: #1DCA7F;
+  --colors-secondary: #6898AE;
+
+  --gap-tiny: 5px;
+  --gap-small: 10px;
+  --gap-normal: 20px;
+  --gap-large: 40px;
+  --gap-huge: 80px;
+
+  --font-size-small: 13px;
+  --font-size-normal: 15px;
+  --font-size-large: 20px;
+}
