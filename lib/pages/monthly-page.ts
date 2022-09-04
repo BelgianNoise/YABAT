@@ -88,7 +88,7 @@ export class MonthlyPageComponent extends RxLitElement {
     const datasetoptions = {
       borderColor: colorsgreylight,
       borderWidth: 1,
-      barPercentage: 1,
+      barPercentage: 0.9,
       categoryPercentage: 0.9,
     };
     const data = {
@@ -135,15 +135,11 @@ export class MonthlyPageComponent extends RxLitElement {
         color: colorswhite,
         responsive: true,
         maintainAspectRatio: false,
-        indexAxis: 'y',
         layout: {
           padding: 0,
         },
         plugins: {
-          legend: {
-            display: true,
-            position: 'left',
-          },
+          legend: { display: false },
         },
       },
     };
@@ -188,21 +184,23 @@ export class MonthlyPageComponent extends RxLitElement {
         <p class="large">${parseToOutput(this.totalUnspent)}</p>
       </div>
 
-      ${this.totalIncome || this.totalExpenses ? html`
-        <div class="pane">
-          <div class="bar-chart-container">
-            <canvas id="bar-chart"></canvas>
+      <div class="charts">
+        ${this.totalIncome || this.totalExpenses ? html`
+          <div class="pane bar-chart-container">
+            <div>
+              <canvas id="bar-chart"></canvas>
+            </div>
           </div>
-        </div>
-      ` : html``}
-
-      ${this.totalExpenses ? html`
-        <div class="pane">
-          <div class="pie-chart-container">
-            <canvas id="pie-chart"></canvas>
+        ` : html``}
+  
+        ${this.totalExpenses ? html`
+          <div class="pane pie-chart-container">
+            <div>
+              <canvas id="pie-chart"></canvas>
+            </div>
           </div>
-        </div>
-      ` : ``}
+        ` : ``}
+      </div>
     `;
 
   }
@@ -235,17 +233,34 @@ export class MonthlyPageComponent extends RxLitElement {
         }
         .large {
           font-size: var(--gap-large);
+          text-overflow: '';
+          overflow: hidden;
+          white-space: nowrap;
         }
         .pane.overview {
           display: grid;
           grid-template-columns: 1fr 2fr 1fr 2fr;
           grid-row-gap: var(--gap-normal);
+          grid-column-gap: var(--gap-normal);
         }
         .pane.overview p {
           line-height: var(--gap-large);
         }
+        .charts {
+          display: flex;
+          gap: var(--gap-large);
+          max-width: 100%;
+        }
+        .pie-chart-container {
+          flex: 1 1;
+          overflow: auto;
+        }
         .bar-chart-container {
-          height: 100px;
+          flex: 0 0;
+          width: 150px;
+        }
+        .bar-chart-container > div {
+          height: 100%;
         }
       `,
     ];
