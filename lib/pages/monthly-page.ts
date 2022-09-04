@@ -164,7 +164,7 @@ export class MonthlyPageComponent extends RxLitElement {
     return html`
       <div class="filter-container">
         <div>
-          <p>Filter:</p>
+          <p>Select month:</p>
           <input type="month" id="dateInput"
             value="${this.selectedYear}-${monthForInputField}"
           >
@@ -172,7 +172,7 @@ export class MonthlyPageComponent extends RxLitElement {
         <div>
           <button class="secondary">
             ${unsafeSVG(Plus)}
-            <p>Add Entry</p>
+            <p>Add Income/Expense</p>
           </button>
         </div>
       </div>
