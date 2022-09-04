@@ -1,9 +1,11 @@
 import { EventObject } from 'xstate';
 
 export enum AppEvents {
-  CLICKED_LOG_IN = '[AppEvents: Clicked Log In]',
   LOGGED_IN_SUCCESFULLY = '[AppEvents: Logged In Succesfully]',
+  CLICKED_LOG_IN = '[AppEvents: Clicked Log In]',
   CLICKED_LOG_OUT = '[AppEvents: Clicked Log Out]',
+  CLICKED_HOME = '[AppEvents: Clicked Home]',
+  CLICKED_MONTHLY = '[AppEvents: Clicked Monthly]',
 }
 
 export class ClickedLogInEvent implements EventObject {
@@ -16,15 +18,23 @@ export class ClickedLogInEvent implements EventObject {
 
 export class ClickedLogOutEvent implements EventObject {
   public type: AppEvents.CLICKED_LOG_OUT = AppEvents.CLICKED_LOG_OUT;
-  constructor() {}
+}
+
+export class ClickedHomeEvent implements EventObject {
+  public type: AppEvents.CLICKED_HOME = AppEvents.CLICKED_HOME;
+}
+
+export class ClickedMonthlyEvent implements EventObject {
+  public type: AppEvents.CLICKED_MONTHLY = AppEvents.CLICKED_MONTHLY;
 }
 
 export class LoggedInSuccesfullyEvent implements EventObject {
   public type: AppEvents.LOGGED_IN_SUCCESFULLY = AppEvents.LOGGED_IN_SUCCESFULLY;
-  constructor() {}
 }
 
 export type AppEvent =
   | ClickedLogInEvent
   | ClickedLogOutEvent
-  | LoggedInSuccesfullyEvent;
+  | LoggedInSuccesfullyEvent
+  | ClickedHomeEvent
+  | ClickedMonthlyEvent;

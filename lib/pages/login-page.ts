@@ -2,6 +2,8 @@ import { html, css, CSSResult, TemplateResult, unsafeCSS, query } from 'lit-elem
 import { RxLitElement } from 'rx-lit';
 import { onEnter } from '../util/on-enter';
 import { defaultCSS } from '../styles/default';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
+import { Logo } from '../styles/svgs';
 
 export class LoginPageComponent extends RxLitElement {
 
@@ -30,7 +32,7 @@ export class LoginPageComponent extends RxLitElement {
     return html`
       <div class="login-window">
         <div class="logo-title">
-          <img src="./logo.svg">
+          ${unsafeSVG(Logo)}
           <h2>YABAT</h2>
         </div>
         <div class="inputs">
@@ -74,13 +76,14 @@ export class LoginPageComponent extends RxLitElement {
           flex-direction: column;
           gap: var(--gap-large);
           align-items: center;
+          z-index: 2;
         }
         .logo-title {
           display: flex;
           gap: var(--gap-normal);
           justify-content: center;
         }
-        .logo-title img {
+        .logo-title svg {
           width: 50px;
         }
         .inputs {
@@ -100,7 +103,7 @@ export class LoginPageComponent extends RxLitElement {
           width: 100%;
           height: 100%;
           position: absolute;
-          z-index: -1;
+          z-index: 0;
           top: 0;
           left: 0;
           background: 

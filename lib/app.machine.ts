@@ -5,6 +5,7 @@ import { AppContext } from './app.context';
 import { AppEvent, AppEvents, LoggedInSuccesfullyEvent } from './app.events';
 import { AppWindowStates, AppDataStates, AppStates, AppStateSchema } from './app.states';
 import { assign, log, send } from 'xstate/lib/actions';
+import { Entry } from './util/models/entry';
 
 export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
   type: 'parallel',
@@ -24,7 +25,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
           invoke: {
             src: (c, e) => loadData(),
             onDone: {
-              actions: assign({ data: (c, e: DoneInvokeEvent<any[]>) => e.data}),
+              actions: assign({ data: (c, e: DoneInvokeEvent<Entry[]>) => e.data}),
               target: AppDataStates.IDLE,
             },
             onError: {
@@ -39,6 +40,8 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
       initial: AppWindowStates.LOGGING_IN,
       on: {
         [AppEvents.CLICKED_LOG_OUT]: `.${AppWindowStates.LOGGING_OUT}`,
+        [AppEvents.CLICKED_HOME]: `.${AppWindowStates.VIEWING_HOME_PAGE}`,
+        [AppEvents.CLICKED_MONTHLY]: `.${AppWindowStates.VIEWING_MONTHLY_PAGE}`,
       },
       states: {
         [AppWindowStates.LOGGING_IN]: {
@@ -60,6 +63,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
           },
         },
         [AppWindowStates.VIEWING_HOME_PAGE]: { },
+        [AppWindowStates.VIEWING_MONTHLY_PAGE]: { },
         [AppWindowStates.LOGGING_OUT]: {
           invoke: {
             src: (c, e) => logout(),

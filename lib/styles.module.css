@@ -2,11 +2,14 @@ body, html {
   padding: 0;
   margin: 0;
   width: 100%;
+  max-width: 100%;
   height: 100%;
+  max-height: 100%;
 }
 
 * {
   font-family: 'Fira Sans';
+  font-size: var(--font-size-normal);
 }
 
 :root {
@@ -15,7 +18,10 @@ body, html {
   --colors-grey-light: #444;
   --colors-white: #FFF;
 
-  --colors-primary-dark: #047870;
+  --colors-red-normal: #FF0000;
+  --colors-red-dark: #AA0000;
+
+  --colors-primary-dark: #00AA5F;
   --colors-primary-light: #1DCA7F;
   --colors-secondary: #6898AE;
 
@@ -28,4 +34,6 @@ body, html {
   --font-size-small: 13px;
   --font-size-normal: 15px;
   --font-size-large: 20px;
+
+  --header-height: 50px;
 }
