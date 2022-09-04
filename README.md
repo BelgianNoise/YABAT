@@ -13,4 +13,4 @@ NOTE:
 ---
 
 Screenshot of current state:
-![image](https://user-images.githubusercontent.com/38424924/188321197-754fdf13-deae-4210-8569-bb18cfacfebe.png)
+![image](https://user-images.githubusercontent.com/38424924/188321293-35063771-8085-43f0-867e-08b12b11fc6c.png)
