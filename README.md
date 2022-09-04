@@ -1,20 +1,15 @@
-# YABAT
+# YABAT - Yet Another Budgeting App/Tool
 
-Figma: https://www.figma.com/file/N9O4anyvqrzJVZonpt69es/Untitled?node-id=0%3A1
+YABAT is a wep app that makes it easy to keep track of your income and expenses. This app allows you to easily add your different incomes and expenses and will give you an overview of how much money you spend and on what, this is done by various calculated numbers and charts.
 
-### Colors:
-- Primary Light: #1DCA7F
-- Primary Dark: 047870
-- Secondary: 6898AE
-- White: #FFFFFF
-- Black: #000000
-- Grey Dark: #222222
-- Grey Light: #444444
+The app does not allow you to register ?yet?. If you are interested in testing the app please contact me so I can create an account for you.
+
+YABAT is build using Typescript, lit, vite, chart.js and xstate. For authentication and storage, Firebase Authentication and Firebase Firestore are used respectively.
+
+NOTE:
+- YABAT does not ask you to link a bank account or make connections with any financial institutions.
+- All data is stored in a Firebase Firestore instance and is in theory accessable by me.
 
 ---
 
-### Mockups
-
-Login screen:
-
-![image](https://user-images.githubusercontent.com/38424924/187937142-34c7ef17-3c36-4fe2-a1b2-f2b7cd0685e7.png)
+Screenshot of current state:
