@@ -16,13 +16,15 @@ export const defaultCSS = css`
     margin: 0;
   }
 
-  input {
+  input, textarea, select {
     border: none;
     outline: none;
     padding: var(--gap-small) var(--gap-normal);
     color: var(--colors-white);
     background-color: var(--colors-grey-light);
     border-radius: var(--gap-small);
+    resize: none;
+    font-size: var(--font-size-medium);
   }
 
   label {

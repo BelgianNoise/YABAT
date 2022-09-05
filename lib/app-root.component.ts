@@ -3,7 +3,7 @@ import { RxLitElement } from 'rx-lit';
 import { from, map } from 'rxjs';
 import { createMachine, interpret, Interpreter, State, StateMachine } from 'xstate';
 import { AppContext } from './app.context';
-import { AppEvent, ClickedHomeEvent, ClickedLogInEvent, ClickedLogOutEvent, ClickedMonthlyEvent } from './app.events';
+import { AppEvent, ClickedAddEntryEvent, ClickedHomeEvent, ClickedLogInEvent, ClickedLogOutEvent, ClickedMonthlyEvent } from './app.events';
 import { appMachine } from './app.machine';
 import { AppDataStates, AppState, AppStates, AppStateSchema, AppWindowStates } from './app.states';
 import { define, hydrate } from './util/components';
@@ -61,6 +61,9 @@ export class AppRootComponent extends RxLitElement {
   clickedMonthly(): void {
     this.actor.send(new ClickedMonthlyEvent());
   }
+  clickedAddEntry(ev: CustomEvent<Entry>): void {
+    this.actor.send(new ClickedAddEntryEvent(ev.detail));
+  }
 
   render(): TemplateResult {
 
@@ -68,6 +71,7 @@ export class AppRootComponent extends RxLitElement {
 
       ${ this.state?.matches({ [AppStates.WINDOW]: AppWindowStates.LOGGING_OUT })
         || this.state?.matches({ [AppStates.WINDOW]: AppWindowStates.LOGGING_IN })
+        || this.state?.matches({ [AppStates.DATA]: AppDataStates.ADDING_DATA })
         || this.state?.matches({ [AppStates.DATA]: AppDataStates.LOADING_DATA }) ? html`
       
         <loading-bar></loading-bar>
@@ -103,6 +107,7 @@ export class AppRootComponent extends RxLitElement {
           ${ this.state?.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_MONTHLY_PAGE }) ? html`
             <monthly-page
               .entries="${this.entries}"
+              @clicked-add="${(ev) => this.clickedAddEntry(ev)}"
             ></monthly-page>
           ` : html`` }
         </div>

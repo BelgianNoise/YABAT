@@ -1,7 +1,6 @@
-import { collection, getFirestore, getDocs, addDoc } from "firebase/firestore"; 
+import { collection, getFirestore, getDocs } from "firebase/firestore"; 
 import { getAuth } from 'firebase/auth';
 import { Entry } from "./models/entry";
-import { Month } from "./models/month";
 
 export async function loadData(): Promise<Entry[]> {
   const col = collection(getFirestore(), getAuth().currentUser.email);
@@ -12,7 +11,7 @@ export async function loadData(): Promise<Entry[]> {
     res.push({
       amount: data.amount,
       year: data.year,
-      month: Month[data.month],
+      month: data.month,
       description: data.description,
       categories: data.categories,
     })

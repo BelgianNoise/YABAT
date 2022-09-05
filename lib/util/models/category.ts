@@ -51,3 +51,9 @@ export function convertCategoryToString(cat: Category | string): string {
     .map((s: string) => `${s.charAt(0)}${s.toLowerCase().slice(1)}`)
     .join(' ');
 }
+
+export function convertStringToCategory(string: string): string {
+  return string.split(' ').join('_').toUpperCase();
+}
+
+export const mainCategories: Category[] = [Category.INCOME,Category.EXPENSE,Category.SAVINGS];

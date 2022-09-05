@@ -2,17 +2,20 @@ import { html, css, CSSResult, TemplateResult, unsafeCSS, state, query } from 'l
 import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
-import { monthNames } from '../util/models/month';
+import { Month, monthNames } from '../util/models/month';
 import { groupForPieChart, parseToOutput, totalExpenses, totalIncome, totalSavings, totalUnspent } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
 import { convertCategoryToString } from '../util/models/category';
 import { Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
+import { define, hydrate } from '../util/components';
+import { AddEntryComponent } from '../components/add-entry';
 
 export class MonthlyPageComponent extends RxLitElement {
 
   @query('#dateInput') input: HTMLInputElement;
+  @query('#addPane') addPane: HTMLElement;
   @query('#bar-chart') barChart: HTMLCanvasElement;
   @query('#pie-chart') pieChart: HTMLCanvasElement;
   @state() entries: Entry[];
@@ -27,6 +30,11 @@ export class MonthlyPageComponent extends RxLitElement {
   private barChartInstance: Chart;
   private pieChartInstance: Chart;
 
+  constructor() {
+    super();
+    define('add-entry', hydrate(AddEntryComponent)());
+  }
+
   firstUpdated(): void {
     this.input?.addEventListener('change', (e) => {
       const split = this.input.value.split('-');
@@ -35,7 +43,7 @@ export class MonthlyPageComponent extends RxLitElement {
     });
   }
 
-  updated(): void {
+  updated(changes): void {
     this.handleBarChart();
     this.handlePieChart();
   }
@@ -148,10 +156,21 @@ export class MonthlyPageComponent extends RxLitElement {
     this.barChartInstance = new Chart(this.barChart, config);
   }
 
-  render(): TemplateResult {
+  scrollToAdd(): void {
+    this.addPane?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  clickedAdd(ev: CustomEvent<Entry>): void {
+    this.dispatchEvent(new CustomEvent<Entry>('clicked-add', { detail: {
+      ...ev.detail,
+      year: this.selectedYear,
+      month: Object.keys(Month)[this.selectedMonth] as Month,
+    }}));
+  }
 
+  render(): TemplateResult {
+    
     const monthForInputField = `${this.selectedMonth < 9 ? '0' : ''}${this.selectedMonth + 1}`;
-    this.filtered = this.entries.filter((e: Entry) => e.year === this.selectedYear && e.month === monthNames[this.selectedMonth]);
+    this.filtered = this.entries.filter((e: Entry) => e.year === this.selectedYear && e.month === Object.keys(Month)[this.selectedMonth]);
     this.totalIncome = totalIncome(this.filtered);
     this.totalExpenses = totalExpenses(this.filtered);
     this.totalSavings = totalSavings(this.filtered);
@@ -166,7 +185,7 @@ export class MonthlyPageComponent extends RxLitElement {
           >
         </div>
         <div>
-          <button class="secondary">
+          <button class="secondary" @click="${() => this.scrollToAdd()}">
             ${unsafeSVG(Plus)}
             <p>Add Income/Expense</p>
           </button>
@@ -184,22 +203,30 @@ export class MonthlyPageComponent extends RxLitElement {
         <p class="large">${parseToOutput(this.totalUnspent)}</p>
       </div>
 
-      <div class="charts">
-        ${this.totalIncome || this.totalExpenses ? html`
-          <div class="pane bar-chart-container">
-            <div>
-              <canvas id="bar-chart"></canvas>
+      ${this.totalExpenses || this.totalIncome ? html`
+        <div class="charts">
+          ${this.totalIncome || this.totalExpenses ? html`
+            <div class="pane bar-chart-container">
+              <div>
+                <canvas id="bar-chart"></canvas>
+              </div>
             </div>
-          </div>
-        ` : html``}
-  
-        ${this.totalExpenses ? html`
-          <div class="pane pie-chart-container">
-            <div>
-              <canvas id="pie-chart"></canvas>
+          ` : html``}
+    
+          ${this.totalExpenses ? html`
+            <div class="pane pie-chart-container">
+              <div>
+                <canvas id="pie-chart"></canvas>
+              </div>
             </div>
-          </div>
-        ` : ``}
+          ` : ``}
+        </div>
+      ` : html`` }
+
+      <div id="addPane" class="pane">
+        <add-entry
+          @clicked-add="${(ev) => this.clickedAdd(ev)}"
+        ></add-entry>
       </div>
     `;
 

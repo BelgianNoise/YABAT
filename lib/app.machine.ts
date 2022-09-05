@@ -6,6 +6,7 @@ import { AppEvent, AppEvents, LoggedInSuccesfullyEvent } from './app.events';
 import { AppWindowStates, AppDataStates, AppStates, AppStateSchema } from './app.states';
 import { assign, log, send } from 'xstate/lib/actions';
 import { Entry } from './util/models/entry';
+import { addData } from './util/add-data';
 
 export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
   type: 'parallel',
@@ -18,6 +19,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
           id: AppDataStates.IDLE,
           on: {
             [AppEvents.LOGGED_IN_SUCCESFULLY]: AppDataStates.LOADING_DATA,
+            [AppEvents.CLICKED_ADD_ENTRY]: AppDataStates.ADDING_DATA,
           },
         },
         [AppDataStates.LOADING_DATA]: {
@@ -30,6 +32,20 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
             },
             onError: {
               actions: log((c, e) => console.log('Error Loading Data:', e)),
+              target: AppDataStates.IDLE,
+            },
+          },
+        },
+        [AppDataStates.ADDING_DATA]: {
+          id: AppDataStates.ADDING_DATA,
+          invoke: {
+            src: (c, e) => addData(c, e),
+            onDone: {
+              actions: assign({ data: (c, e: DoneInvokeEvent<Entry>) => [ ...c.data, e.data ]}),
+              target: AppDataStates.IDLE,
+            },
+            onError: {
+              actions: log((c, e) => console.log('Error Adding Data:', e)),
               target: AppDataStates.IDLE,
             },
           },

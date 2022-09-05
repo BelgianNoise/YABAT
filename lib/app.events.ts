@@ -1,3 +1,4 @@
+import { Entry } from './util/models/entry';
 import { EventObject } from 'xstate';
 
 export enum AppEvents {
@@ -6,6 +7,7 @@ export enum AppEvents {
   CLICKED_LOG_OUT = '[AppEvents: Clicked Log Out]',
   CLICKED_HOME = '[AppEvents: Clicked Home]',
   CLICKED_MONTHLY = '[AppEvents: Clicked Monthly]',
+  CLICKED_ADD_ENTRY = '[AppEvents: Clicked Add Entry]',
 }
 
 export class ClickedLogInEvent implements EventObject {
@@ -32,9 +34,17 @@ export class LoggedInSuccesfullyEvent implements EventObject {
   public type: AppEvents.LOGGED_IN_SUCCESFULLY = AppEvents.LOGGED_IN_SUCCESFULLY;
 }
 
+export class ClickedAddEntryEvent implements EventObject {
+  public type: AppEvents.CLICKED_ADD_ENTRY = AppEvents.CLICKED_ADD_ENTRY;
+  constructor(
+    public entry: Entry,
+  ) {}
+}
+
 export type AppEvent =
   | ClickedLogInEvent
   | ClickedLogOutEvent
   | LoggedInSuccesfullyEvent
   | ClickedHomeEvent
-  | ClickedMonthlyEvent;
+  | ClickedMonthlyEvent
+  | ClickedAddEntryEvent;
