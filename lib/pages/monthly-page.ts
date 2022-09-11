@@ -6,11 +6,12 @@ import { Month, monthNames } from '../util/models/month';
 import { groupForPieChart, parseToOutput, totalExpenses, totalIncome, totalSavings, totalUnspent } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
-import { convertCategoryToString } from '../util/models/category';
+import { Category, convertCategoryToString } from '../util/models/category';
 import { Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { define, hydrate } from '../util/components';
 import { AddEntryComponent } from '../components/add-entry';
+import { SingleEntryComponent } from '../components/single-entry';
 
 export class MonthlyPageComponent extends RxLitElement {
 
@@ -33,6 +34,7 @@ export class MonthlyPageComponent extends RxLitElement {
   constructor() {
     super();
     define('add-entry', hydrate(AddEntryComponent)());
+    define('single-entry', hydrate(SingleEntryComponent)());
   }
 
   firstUpdated(): void {
@@ -43,7 +45,7 @@ export class MonthlyPageComponent extends RxLitElement {
     });
   }
 
-  updated(changes): void {
+  updated(): void {
     this.handleBarChart();
     this.handlePieChart();
   }
@@ -166,11 +168,15 @@ export class MonthlyPageComponent extends RxLitElement {
       month: Object.keys(Month)[this.selectedMonth] as Month,
     }}));
   }
+  clickedDelete(ev: CustomEvent<string>): void {
+    this.dispatchEvent(new CustomEvent('clicked-delete', { detail: ev.detail }));
+  }
 
   render(): TemplateResult {
     
     const monthForInputField = `${this.selectedMonth < 9 ? '0' : ''}${this.selectedMonth + 1}`;
-    this.filtered = this.entries.filter((e: Entry) => e.year === this.selectedYear && e.month === Object.keys(Month)[this.selectedMonth]);
+    this.filtered = this.entries.filter((e: Entry) => e.year === this.selectedYear && e.month === Object.keys(Month)[this.selectedMonth])
+      .sort((e1, e2) => e2.categories.toString().localeCompare(e1.categories.toString()));
     this.totalIncome = totalIncome(this.filtered);
     this.totalExpenses = totalExpenses(this.filtered);
     this.totalSavings = totalSavings(this.filtered);
@@ -227,6 +233,47 @@ export class MonthlyPageComponent extends RxLitElement {
         <add-entry
           @clicked-add="${(ev) => this.clickedAdd(ev)}"
         ></add-entry>
+      </div>
+
+      <div class="pane">
+        <h2>Overview</h2>
+
+        <div class="overview-section income">
+          <h3>Income</h3>
+          <div class="list">
+            ${this.filtered.filter((e) => e.categories.includes(Category.INCOME)).map((e) => html`
+              <single-entry
+                .entry="${e}"
+                @clicked-delete="${(ev: CustomEvent) => this.clickedDelete(ev)}"
+              ></single-entry>
+            `)}
+          </div>
+        </div>
+
+        <div class="overview-section savings">
+          <h3>Savings</h3>
+          <div class="list">
+            ${this.filtered.filter((e) => e.categories.includes(Category.SAVINGS)).map((e) => html`
+              <single-entry
+                .entry="${e}"
+                @clicked-delete="${(ev: CustomEvent) => this.clickedDelete(ev)}"
+              ></single-entry>
+            `)}
+          </div>
+        </div>
+
+        <div class="overview-section expenses">
+          <h3>Expenses</h3>
+          <div class="list">
+            ${this.filtered.filter((e) => e.categories.includes(Category.EXPENSE)).map((e) => html`
+              <single-entry
+                .entry="${e}"
+                @clicked-delete="${(ev: CustomEvent) => this.clickedDelete(ev)}"
+              ></single-entry>
+            `)}
+          </div>
+        </div>
+
       </div>
     `;
 
@@ -288,6 +335,24 @@ export class MonthlyPageComponent extends RxLitElement {
         }
         .bar-chart-container > div {
           height: 100%;
+        }
+        .overview-section {
+          border-left: 2px solid white;
+          padding-left: var(--gap-normal);
+        }
+        .overview-section .list {
+          display: flex;
+          flex-direction: column;
+          gap: var(--gap-small);
+        }
+        .income {
+          border-color: var(--colors-primary-light);
+        }
+        .savings {
+          border-color: var(--colors-secondary);
+        }
+        .expenses {
+          border-color: var(--colors-red-normal);
         }
       `,
     ];

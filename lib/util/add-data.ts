@@ -8,6 +8,10 @@ export async function addData(c: AppContext, e: AppEvent): Promise<Entry> {
   if (!(e instanceof ClickedAddEntryEvent)) throw new Error('');
   console.log('Saving: ', e.entry);
   const col = collection(getFirestore(), getAuth().currentUser.email);
-  await addDoc(col, e.entry);
-  return e.entry;
+  delete e.entry.id; // Remove filler id to not save in document
+  const added = await addDoc(col, e.entry);
+  return {
+    ...e.entry,
+    id: added.id,
+  };
 }

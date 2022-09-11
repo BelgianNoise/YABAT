@@ -3,7 +3,7 @@ import { RxLitElement } from 'rx-lit';
 import { from, map } from 'rxjs';
 import { createMachine, interpret, Interpreter, State, StateMachine } from 'xstate';
 import { AppContext } from './app.context';
-import { AppEvent, ClickedAddEntryEvent, ClickedHomeEvent, ClickedLogInEvent, ClickedLogOutEvent, ClickedMonthlyEvent } from './app.events';
+import { AppEvent, ClickedAddEntryEvent, ClickedDeleteEntryEvent, ClickedHomeEvent, ClickedLogInEvent, ClickedLogOutEvent, ClickedMonthlyEvent } from './app.events';
 import { appMachine } from './app.machine';
 import { AppDataStates, AppState, AppStates, AppStateSchema, AppWindowStates } from './app.states';
 import { define, hydrate } from './util/components';
@@ -64,6 +64,9 @@ export class AppRootComponent extends RxLitElement {
   clickedAddEntry(ev: CustomEvent<Entry>): void {
     this.actor.send(new ClickedAddEntryEvent(ev.detail));
   }
+  clickedDelete(ev: CustomEvent<string>): void {
+    this.actor.send(new ClickedDeleteEntryEvent(ev.detail));
+  }
 
   render(): TemplateResult {
 
@@ -108,6 +111,7 @@ export class AppRootComponent extends RxLitElement {
             <monthly-page
               .entries="${this.entries}"
               @clicked-add="${(ev) => this.clickedAddEntry(ev)}"
+              @clicked-delete="${(ev) => this.clickedDelete(ev)}"
             ></monthly-page>
           ` : html`` }
         </div>

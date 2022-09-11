@@ -9,6 +9,7 @@ export enum AppStates {
 export enum AppDataStates {
   LOADING_DATA = '[AppDataState: Loading Data]',
   ADDING_DATA = '[AppDataState: Adding Data]',
+  DELETEING_DATA = '[AppDataState: Deleteing Data]',
   IDLE = '[AppDataState: Idle]',
 }
 

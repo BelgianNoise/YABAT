@@ -9,6 +9,7 @@ import { define, hydrate } from '../util/components';
 import { CustomSelectComponent } from './custom-select';
 import { CustomSelectMultipleComponent } from './custom-select-multiple';
 import { Month } from '../util/models/month';
+import { onEnter } from '../util/on-enter';
 
 export class AddEntryComponent extends RxLitElement {
   
@@ -23,6 +24,10 @@ export class AddEntryComponent extends RxLitElement {
     define('custom-select-multiple', hydrate(CustomSelectMultipleComponent)());
   }
 
+  firstUpdated() {
+    onEnter(this.amountField, () => this.clickedAdd());
+  }
+
   clickedAdd() {
     const amount = Number(this.amountField.value);
     if (this.mainCatValue && amount) {
@@ -30,7 +35,7 @@ export class AddEntryComponent extends RxLitElement {
         categories: [ this.mainCatValue, ...this.extraCats ],
         amount,
         description: this.descriptionField?.value,
-        year: 0, month: Month.JANUARY, // Filler values
+        year: 0, month: Month.JANUARY, id: 'filler', // Filler values
       };
       this.dispatchEvent(new CustomEvent<Entry>('clicked-add', { detail: entry }));
       this.amountField.value = '';

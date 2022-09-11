@@ -16,6 +16,7 @@ body, html {
   --colors-black: #000;
   --colors-grey-dark: #222;
   --colors-grey-light: #444;
+  --colors-grey-lighter: #666;
   --colors-white: #FFF;
 
   --colors-red-normal: #FF0000;

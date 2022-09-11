@@ -8,6 +8,7 @@ export enum AppEvents {
   CLICKED_HOME = '[AppEvents: Clicked Home]',
   CLICKED_MONTHLY = '[AppEvents: Clicked Monthly]',
   CLICKED_ADD_ENTRY = '[AppEvents: Clicked Add Entry]',
+  CLICKED_DELETE = '[AppEvents: Clicked Delete]',
 }
 
 export class ClickedLogInEvent implements EventObject {
@@ -41,10 +42,18 @@ export class ClickedAddEntryEvent implements EventObject {
   ) {}
 }
 
+export class ClickedDeleteEntryEvent implements EventObject {
+  public type: AppEvents.CLICKED_DELETE = AppEvents.CLICKED_DELETE;
+  constructor(
+    public id: string,
+  ) {}
+}
+
 export type AppEvent =
   | ClickedLogInEvent
   | ClickedLogOutEvent
   | LoggedInSuccesfullyEvent
   | ClickedHomeEvent
   | ClickedMonthlyEvent
-  | ClickedAddEntryEvent;
+  | ClickedAddEntryEvent
+  | ClickedDeleteEntryEvent;

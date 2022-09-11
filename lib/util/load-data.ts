@@ -9,6 +9,7 @@ export async function loadData(): Promise<Entry[]> {
   snapshot.forEach((doc) => {
     const data = doc.data();
     res.push({
+      id: doc.id,
       amount: data.amount,
       year: data.year,
       month: data.month,

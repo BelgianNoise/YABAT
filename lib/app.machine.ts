@@ -7,6 +7,7 @@ import { AppWindowStates, AppDataStates, AppStates, AppStateSchema } from './app
 import { assign, log, send } from 'xstate/lib/actions';
 import { Entry } from './util/models/entry';
 import { addData } from './util/add-data';
+import { deleteData } from './util/delete-data';
 
 export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
   type: 'parallel',
@@ -20,6 +21,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
           on: {
             [AppEvents.LOGGED_IN_SUCCESFULLY]: AppDataStates.LOADING_DATA,
             [AppEvents.CLICKED_ADD_ENTRY]: AppDataStates.ADDING_DATA,
+            [AppEvents.CLICKED_DELETE]: AppDataStates.DELETEING_DATA,
           },
         },
         [AppDataStates.LOADING_DATA]: {
@@ -46,6 +48,20 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
             },
             onError: {
               actions: log((c, e) => console.log('Error Adding Data:', e)),
+              target: AppDataStates.IDLE,
+            },
+          },
+        },
+        [AppDataStates.DELETEING_DATA]: {
+          id: AppDataStates.DELETEING_DATA,
+          invoke: {
+            src: (c, e) => deleteData(c, e),
+            onDone: {
+              actions: assign({ data: (c, ev: DoneInvokeEvent<string>) => c.data.filter((e) => e.id !== ev.data)}),
+              target: AppDataStates.IDLE,
+            },
+            onError: {
+              actions: log((c, e) => console.log('Error Deleteing Data:', e)),
               target: AppDataStates.IDLE,
             },
           },
