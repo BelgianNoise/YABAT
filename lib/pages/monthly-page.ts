@@ -248,6 +248,7 @@ export class MonthlyPageComponent extends RxLitElement {
         <div class="pane">
           <recurring-component
             @go-back="${() => this.showAdd()}"
+            @clicked-add="${(ev) => this.clickedAdd(ev)}"
             .entries="${
               this.entries
                 .filter(e => e.categories.includes(Category.RECURRING)) // Recurring only

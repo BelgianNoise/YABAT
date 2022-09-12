@@ -14,6 +14,9 @@ export class RecurringComponent extends RxLitElement {
   clickedBack() {
     this.dispatchEvent(new CustomEvent('go-back'));
   }
+  clickedAdd(entry: Entry) {
+    this.dispatchEvent(new CustomEvent<Entry>('clicked-add', { detail: entry }));
+  }
 
   render(): TemplateResult {
 
@@ -38,7 +41,7 @@ export class RecurringComponent extends RxLitElement {
                   .join(', ')
                 }
               </p>
-              <button class="secondary">
+              <button class="secondary" @click="${() => this.clickedAdd(e)}">
                 ${unsafeSVG(Plus)}
               </button>
             </div>
