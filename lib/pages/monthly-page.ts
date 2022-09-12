@@ -3,7 +3,7 @@ import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
 import { Month, monthNames } from '../util/models/month';
-import { groupForPieChart, parseToOutput, totalExpenses, totalIncome, totalSavings, totalUnspent } from '../util/helper';
+import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalUnspent } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
 import { Category, convertCategoryToString } from '../util/models/category';
@@ -252,11 +252,12 @@ export class MonthlyPageComponent extends RxLitElement {
             .entries="${
               this.entries
                 .filter(e => e.categories.includes(Category.RECURRING)) // Recurring only
-                .filter((val, index, self) => self.findIndex(e =>
-                  e.amount === val.amount && e.categories.every(c => val.categories.includes(c))
-                ) === index) // Uniques only
+                .filter((val, _, self) => self
+                  .filter(e => hasCategories(e, val.categories as Category[]))
+                  .every(e => { console.log('====', e); return Date.parse(`1 ${val.month} ${val.year}`) >= Date.parse(`1 ${e.month} ${e.year}`)})
+                ) // Take latest entry only
                 .filter(val => !(this.filtered.find(e =>
-                  e.amount === val.amount && e.categories.every(c => val.categories.includes(c))
+                  e.categories.every(c => val.categories.includes(c))
                 ))) // Filter out entries already present for selected month
               }"
           ></recurring-component>
