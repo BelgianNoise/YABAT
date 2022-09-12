@@ -12,6 +12,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { define, hydrate } from '../util/components';
 import { AddEntryComponent } from '../components/add-entry';
 import { SingleEntryComponent } from '../components/single-entry';
+import { RecurringComponent } from '../components/recurring';
 
 export class MonthlyPageComponent extends RxLitElement {
 
@@ -19,6 +20,7 @@ export class MonthlyPageComponent extends RxLitElement {
   @query('#addPane') addPane: HTMLElement;
   @query('#bar-chart') barChart: HTMLCanvasElement;
   @query('#pie-chart') pieChart: HTMLCanvasElement;
+  @query('.addContainer') addContainer: HTMLElement;
   @state() entries: Entry[];
   @state() selectedMonth: number = new Date().getMonth();
   @state() selectedYear: number = new Date().getFullYear();
@@ -35,6 +37,7 @@ export class MonthlyPageComponent extends RxLitElement {
     super();
     define('add-entry', hydrate(AddEntryComponent)());
     define('single-entry', hydrate(SingleEntryComponent)());
+    define('recurring-component', hydrate(RecurringComponent)());
   }
 
   firstUpdated(): void {
@@ -171,12 +174,18 @@ export class MonthlyPageComponent extends RxLitElement {
   clickedDelete(ev: CustomEvent<string>): void {
     this.dispatchEvent(new CustomEvent('clicked-delete', { detail: ev.detail }));
   }
+  showRecurring(): void {
+    this.addContainer.style.transform = 'translate(calc(-50% - var(--gap-huge)), 0)';
+  }
+  showAdd(): void {
+    this.addContainer.style.transform = 'translate(0, 0)';
+  }
 
   render(): TemplateResult {
     
     const monthForInputField = `${this.selectedMonth < 9 ? '0' : ''}${this.selectedMonth + 1}`;
     this.filtered = this.entries.filter((e: Entry) => e.year === this.selectedYear && e.month === Object.keys(Month)[this.selectedMonth])
-      .sort((e1, e2) => e2.categories.toString().localeCompare(e1.categories.toString()));
+      .sort((e1, e2) => e1.categories.toString().localeCompare(e2.categories.toString()));
     this.totalIncome = totalIncome(this.filtered);
     this.totalExpenses = totalExpenses(this.filtered);
     this.totalSavings = totalSavings(this.filtered);
@@ -229,10 +238,28 @@ export class MonthlyPageComponent extends RxLitElement {
         </div>
       ` : html`` }
 
-      <div id="addPane" class="pane">
-        <add-entry
-          @clicked-add="${(ev) => this.clickedAdd(ev)}"
-        ></add-entry>
+      <div class="addContainer">
+        <div id="addPane" class="pane">
+          <add-entry
+            @clicked-add="${(ev) => this.clickedAdd(ev)}"
+            @show-recurring="${() => this.showRecurring()}"
+          ></add-entry>
+        </div>
+        <div class="pane">
+          <recurring-component
+            @go-back="${() => this.showAdd()}"
+            .entries="${
+              this.entries
+                .filter(e => e.categories.includes(Category.RECURRING)) // Recurring only
+                .filter((val, index, self) => self.findIndex(e =>
+                  e.amount === val.amount && e.categories.every(c => val.categories.includes(c))
+                ) === index) // Uniques only
+                .filter(val => !(this.filtered.find(e =>
+                  e.amount === val.amount && e.categories.every(c => val.categories.includes(c))
+                ))) // Filter out entries already present for selected month
+              }"
+          ></recurring-component>
+        </div>
       </div>
 
       <div class="pane">
@@ -241,7 +268,7 @@ export class MonthlyPageComponent extends RxLitElement {
         <div class="overview-section income">
           <h3>Income</h3>
           <div class="list">
-            ${this.filtered.filter((e) => e.categories.includes(Category.INCOME)).map((e) => html`
+            ${this.filtered.filter((e) => e.categories.includes(Category.INCOME)).sort((a,b) => b.amount - a.amount).map((e) => html`
               <single-entry
                 .entry="${e}"
                 @clicked-delete="${(ev: CustomEvent) => this.clickedDelete(ev)}"
@@ -253,7 +280,7 @@ export class MonthlyPageComponent extends RxLitElement {
         <div class="overview-section savings">
           <h3>Savings</h3>
           <div class="list">
-            ${this.filtered.filter((e) => e.categories.includes(Category.SAVINGS)).map((e) => html`
+            ${this.filtered.filter((e) => e.categories.includes(Category.SAVINGS)).sort((a,b) => b.amount - a.amount).map((e) => html`
               <single-entry
                 .entry="${e}"
                 @clicked-delete="${(ev: CustomEvent) => this.clickedDelete(ev)}"
@@ -353,6 +380,16 @@ export class MonthlyPageComponent extends RxLitElement {
         }
         .expenses {
           border-color: var(--colors-red-normal);
+        }
+        .addContainer {
+          width: calc(200% + var(--gap-huge) + 2*var(--gap-large)); 
+          display: flex;
+          gap: calc(var(--gap-huge) + 2*var(--gap-large));
+          transition: transform 0.5s ease-in-out;
+          max-height: 346px
+        }
+        .addContainer > div {
+          flex: 1 1;
         }
       `,
     ];

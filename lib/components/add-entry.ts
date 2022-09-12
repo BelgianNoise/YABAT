@@ -1,7 +1,7 @@
 import { html, css, CSSResult, TemplateResult, unsafeCSS, query, state } from 'lit-element';
 import { RxLitElement } from 'rx-lit';
 import { defaultCSS } from '../styles/default';
-import { Plus } from '../styles/svgs';
+import { ArrowLeft, Dots, Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { Entry } from '../util/models/entry';
 import { Category, convertCategoryToString, mainCategories } from '../util/models/category';
@@ -43,16 +43,25 @@ export class AddEntryComponent extends RxLitElement {
       (this.shadowRoot.querySelector("custom-select-multiple") as CustomSelectMultipleComponent)?.reset();
     }
   }
+  clickedMore() {
+    this.dispatchEvent(new CustomEvent('show-recurring'));
+  }
 
   render(): TemplateResult {
 
     return html`
       <div class="title">
         <h2>Add Income/Expense</h2>
-        <button class="primary" @click="${() => this.clickedAdd()}">
-          ${unsafeSVG(Plus)}
-          <p>Add</p>
-        </button>
+        <div class="buttons">
+          <button class="primary" @click="${() => this.clickedAdd()}">
+            ${unsafeSVG(Plus)}
+            <p>Add</p>
+          </button>
+          <button class="secondary rotate" @click="${() => this.clickedMore()}">
+            <p>More</p>
+            ${unsafeSVG(ArrowLeft)}
+          </button>
+        </div>
       </div>
 
       <div class="inputs">
@@ -99,11 +108,18 @@ export class AddEntryComponent extends RxLitElement {
           justify-content: space-between;
           align-items: center;
         }
+        .title .buttons {
+          display: flex;
+          gap: var(--gap-small);
+        }
         .inputs {
           display: grid;
           grid-template-columns: 1fr 3fr;
           grid-column-gap: var(--gap-large);
           grid-row-gap: var(--gap-normal);
+        }
+        .secondary.rotate svg {
+          transform: rotate(180deg);
         }
       `,
     ];

@@ -60,6 +60,10 @@ export const defaultCSS = css`
     fill: var(--colors-primary-light);
   }
 
+  button.svg-only {
+    padding: var(--gap-tiny) var(--gap-small);
+  }
+
   button.primary:hover {
     background-color: var(--colors-primary-dark);
   }
