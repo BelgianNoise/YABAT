@@ -329,11 +329,6 @@ export class MonthlyPageComponent extends RxLitElement {
           align-items: center;
           gap: var(--gap-normal);
         }
-        .pane {
-          background-color: var(--colors-grey-dark);
-          border-radius: var(--gap-small);
-          padding: var(--gap-normal) var(--gap-large);
-        }
         .large {
           font-size: var(--gap-large);
           text-overflow: '';
@@ -356,11 +351,10 @@ export class MonthlyPageComponent extends RxLitElement {
         }
         .pie-chart-container {
           flex: 1 1;
-          overflow: auto;
         }
         .bar-chart-container {
           flex: 0 0;
-          width: 150px;
+          min-width: 150px !important;
         }
         .bar-chart-container > div {
           height: 100%;

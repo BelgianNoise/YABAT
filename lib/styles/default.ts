@@ -86,4 +86,10 @@ export const defaultCSS = css`
   .positive { color: var(--colors-primary-light); }
   .negative { color: var(--colors-red-normal); }
   .neutral { color: var(--colors-secondary); }
+
+  .pane {
+    background-color: var(--colors-grey-dark);
+    border-radius: var(--gap-small);
+    padding: var(--gap-normal) var(--gap-large);
+  }
 `;

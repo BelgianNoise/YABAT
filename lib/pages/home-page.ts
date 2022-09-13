@@ -2,16 +2,84 @@ import { html, css, CSSResult, TemplateResult, unsafeCSS, state } from 'lit-elem
 import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
+import { define, hydrate } from '../util/components';
+import { IncomeChartComponent } from '../components/home/income-chart';
+import { ExpensesChartComponent } from '../components/home/expenses-chart';
+import { SavingsChartComponent } from '../components/home/savings-chart';
+import { parseToOutput, totalExpenses, totalIncome, totalSavings } from '../util/helper';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { Help } from '../styles/svgs';
+import { DistributionChartComponent } from '../components/home/distribution-chart';
 
 export class HomePageComponent extends RxLitElement {
 
+  @state() currentYear = new Date().getUTCFullYear();
   @state() entries: Entry[];
+
+  private tooltipText = unsafeHTML('Charts on this page are not comparable in terms of scale, to compare charts please look at the Y axis too!<br/><br/>The expenses and savings may not add up to the total income listed on this page, a portion of the income may not be allocated to an expense nor a saving. You can find further details on the "Monthly Overview" page for that month.');
+
+  constructor() {
+    super();
+    define('income-chart', hydrate(IncomeChartComponent)());
+    define('expenses-chart', hydrate(ExpensesChartComponent)());
+    define('savings-chart', hydrate(SavingsChartComponent)());
+    define('distribution-chart', hydrate(DistributionChartComponent)());
+  }
 
   render(): TemplateResult {
 
+    const filtered = this.entries?.filter(e => this.currentYear === e.year);
+
     return html`
-      Home Page
-      <span>${JSON.stringify(this.entries)}</span>
+      <div class="pane">
+        <div class="title">
+          <h2>Income</h2>
+          <div>
+            <h2 class="positive">${parseToOutput(totalIncome(filtered))}</h2>
+            <div class="tooltip-container">
+              ${unsafeSVG(Help)}
+              <span class="tooltip">${this.tooltipText}</span>
+            </div>
+          </div>
+        </div>
+        <income-chart .entries="${filtered}"></income-chart>
+      </div>
+
+      <div class="pane">
+        <div class="title">
+          <h2>Expenses</h2>
+          <div>
+            <h2 class="negative">${parseToOutput(totalExpenses(filtered))}</h2>
+            <div class="tooltip-container">
+              ${unsafeSVG(Help)}
+              <span class="tooltip">${this.tooltipText}</span>
+            </div>
+          </div>
+        </div>
+        <expenses-chart .entries="${filtered}"></expenses-chart>
+      </div>
+
+      <div class="pane">
+        <div class="title">
+          <h2>Savings</h2>
+          <div>
+            <h2 class="neutral">${parseToOutput(totalSavings(filtered))}</h2>
+            <div class="tooltip-container">
+              ${unsafeSVG(Help)}
+              <span class="tooltip">${this.tooltipText}</span>
+            </div>
+          </div>
+        </div>
+        <savings-chart .entries="${filtered}"></savings-chart>
+      </div>
+
+      <div class="pane distribution">
+        <div class="title">
+          <h2>Expenses Distribution</h2>
+        </div>
+        <distribution-chart .entries="${filtered}"></distribution-chart>
+      </div>
     `;
 
   }
@@ -22,7 +90,74 @@ export class HomePageComponent extends RxLitElement {
       unsafeCSS(defaultCSS),
       css`
         :host {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-column-gap: var(--gap-large);
+          grid-row-gap: var(--gap-large);
+          grid-auto-rows: 1fr;
+        }
 
+        .distribution {
+          grid-column: 1 / 3;
+          max-height: 500px !important;
+        }
+
+        @media only screen and (max-width: 1100px) {
+          :host {
+            grid-template-columns: 1fr;
+          }
+          .distribution {
+            grid-column: 1 / 2;
+          }
+        }
+
+        .pane {
+          display: flex;
+          flex-direction: column;
+          gap: var(--gap-small);
+        }
+        
+        .pane > *:last-child {
+          flex: 1 1;
+          max-height: calc(100% - var(--gap-normal) - var(--gap-small));
+        }
+
+        .pane .title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .pane .title > div {
+          display: flex;
+          gap: var(--gap-normal);
+        }
+
+        .tooltip-container svg {
+          fill: var(--colors-grey-lighter);
+          width: var(--gap-normal);
+        }
+        .tooltip-container {
+          cursor: help;
+          display: flex;
+          align-items: center;
+          position: relative;
+        }
+        .tooltip {
+          display: none;
+          position: absolute;
+          top: 0;
+          right: 0;
+          color: var(--colors-grey-lighter);
+          background-color: var(--colors-black);
+          border: 1px solid var(--colors-grey-lighter);
+          padding: var(--gap-small);
+          border-radius: var(--gap-small);
+          width: 300px;
+          text-align: center;
+        }
+        .tooltip-container:hover .tooltip {
+          display: inline-block;
         }
       `,
     ];
