@@ -55,6 +55,7 @@ export function groupForPieChart(entries: Entry[]): Record<string, { amount: num
     [Category.UTILITIES]: 'yellow',
     [Category.INTERNET]: 'lightblue',
     [Category.HEALTH]: 'red',
+    [Category.HOME]: 'pink',
     [Category.GROCERIES]: 'green',
     [Category.TAKE_OUT]: 'orange',
     [Category.LEISURE]: 'lightyellow',
