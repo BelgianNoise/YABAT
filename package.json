@@ -19,12 +19,14 @@
   "scripts": {
     "start": "npm run build && http-server dist/",
     "start:vite": "vite serve -m local-development",
-    "build": "shx rm -rf dist && vite build && tsc"
+    "build": "shx rm -rf dist && vite build",
+    "deploy": "npm run build && gh-pages -d dist && shx rm -rf dist"
   },
   "dependencies": {
     "@xstate/inspect": "^0.4.1",
     "chart.js": "^3.9.1",
     "firebase": "^9.9.4",
+    "gh-pages": "^4.0.0",
     "lit-element": "^2.5.1",
     "rx-lit": "1.0.1",
     "rxjs": "^7.4.0",
