@@ -1,6 +1,7 @@
 export const colorsblack = '#000';
 export const colorsgreydark = '#222';
 export const colorsgreylight = '#444';
+export const colorsgreylighter = '#666';
 export const colorswhite = '#FFF';
 
 export const colorsrednormal = '#FF0000';

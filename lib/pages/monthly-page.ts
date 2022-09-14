@@ -3,7 +3,7 @@ import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
 import { Month, monthNames } from '../util/models/month';
-import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalUnspent } from '../util/helper';
+import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalNetto } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
 import { Category, convertCategoryToString } from '../util/models/category';
@@ -29,7 +29,7 @@ export class MonthlyPageComponent extends RxLitElement {
   @state() totalIncome: number = 0;
   @state() totalExpenses: number = 0;
   @state() totalSavings: number = 0;
-  @state() totalUnspent: number = 0;
+  @state() totalNetto: number = 0;
   private barChartInstance: Chart;
   private pieChartInstance: Chart;
 
@@ -132,8 +132,8 @@ export class MonthlyPageComponent extends RxLitElement {
           ...datasetoptions,
         },
         {
-          data: [ this.totalUnspent ],
-          label: 'Unspent',
+          data: [ this.totalNetto > 0 ? this.totalNetto : 0 ],
+          label: 'Netto',
           backgroundColor: '#666',
           hoverBackgroundColor: colorswhite,
           stack: '1',
@@ -189,7 +189,7 @@ export class MonthlyPageComponent extends RxLitElement {
     this.totalIncome = totalIncome(this.filtered);
     this.totalExpenses = totalExpenses(this.filtered);
     this.totalSavings = totalSavings(this.filtered);
-    this.totalUnspent = totalUnspent(this.filtered);
+    this.totalNetto = totalNetto(this.filtered);
 
     return html`
       <div class="filter-container">
@@ -214,8 +214,8 @@ export class MonthlyPageComponent extends RxLitElement {
         <p class="negative large">${parseToOutput(this.totalExpenses)}</p>
         <p>Savings</p>
         <p class="neutral large">${parseToOutput(this.totalSavings)}</p>
-        <p>Unspent</p>
-        <p class="large">${parseToOutput(this.totalUnspent)}</p>
+        <p>Netto</p>
+        <p class="large">${parseToOutput(this.totalNetto)}</p>
       </div>
 
       ${this.totalExpenses || this.totalIncome ? html`

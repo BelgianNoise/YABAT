@@ -37,9 +37,8 @@ export function totalSavings(entries: Entry[]): number {
   return getTotal(entries, Category.SAVINGS);
 }
 
-export function totalUnspent(entries: Entry[]): number {
-  const unspent = totalIncome(entries) - totalExpenses(entries) - totalSavings(entries);
-  return unspent >= 0 ? unspent : 0;
+export function totalNetto(entries: Entry[]): number {
+  return totalIncome(entries) - totalExpenses(entries) - totalSavings(entries);
 }
 
 export function parseToOutput(num: number): string {

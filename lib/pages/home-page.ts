@@ -11,6 +11,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { Help } from '../styles/svgs';
 import { DistributionChartComponent } from '../components/home/distribution-chart';
+import { NettoChartComponent } from '../components/home/netto-chart';
 
 export class HomePageComponent extends RxLitElement {
 
@@ -25,6 +26,7 @@ export class HomePageComponent extends RxLitElement {
     define('expenses-chart', hydrate(ExpensesChartComponent)());
     define('savings-chart', hydrate(SavingsChartComponent)());
     define('distribution-chart', hydrate(DistributionChartComponent)());
+    define('netto-chart', hydrate(NettoChartComponent)());
   }
 
   render(): TemplateResult {
@@ -72,6 +74,20 @@ export class HomePageComponent extends RxLitElement {
           </div>
         </div>
         <savings-chart .entries="${filtered}"></savings-chart>
+      </div>
+
+      <div class="pane">
+        <div class="title">
+          <h2>Netto</h2>
+          <div>
+            <h2>${parseToOutput(totalIncome(filtered) - totalExpenses(filtered) - totalSavings(filtered))}</h2>
+            <div class="tooltip-container">
+              ${unsafeSVG(Help)}
+              <span class="tooltip">${this.tooltipText}</span>
+            </div>
+          </div>
+        </div>
+        <netto-chart .entries="${filtered}"></netto-chart>
       </div>
 
       <div class="pane distribution">
