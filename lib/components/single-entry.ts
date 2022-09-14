@@ -1,6 +1,6 @@
 import { html, css, CSSResult, TemplateResult, unsafeCSS, state } from 'lit-element';
 import { RxLitElement } from 'rx-lit';
-import { Category, convertCategoryToString } from '../util/models/category';
+import { Category, CategoryType, convertCategoryToString } from '../util/models/category';
 import { defaultCSS } from '../styles/default';
 import { Entry } from '../util/models/entry';
 import { parseToOutput } from '../util/helper';
@@ -20,7 +20,7 @@ export class SingleEntryComponent extends RxLitElement {
     return html`
       <p>${parseToOutput(this.entry.amount)}</p>
       <p>${this.entry.categories
-        .filter(c => ![Category.INCOME, Category.EXPENSE, Category.SAVINGS].includes(c as Category))
+        .filter(c => !([Category.INCOME, Category.EXPENSE, Category.SAVINGS] as CategoryType[]).includes(c as CategoryType))
         .map(c => convertCategoryToString(c))
         .join(', ')
       }</p>

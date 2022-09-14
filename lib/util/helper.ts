@@ -1,27 +1,27 @@
 import { colorsgreylight, colorsprimarydark } from "../styles/colors";
-import { Category } from "./models/category";
+import { Category, CategoryType } from "./models/category";
 import { Entry } from "./models/entry";
 
-export function hasCategory(entry: Entry, category: Category): boolean {
+export function hasCategory(entry: Entry, category: CategoryType): boolean {
   return entry.categories.includes(category);
 }
 
-export function hasCategories(entry: Entry, categories: Category[]): boolean {
+export function hasCategories(entry: Entry, categories: CategoryType[]): boolean {
   return categories.every((c) => hasCategory(entry, c));
 }
 
-export function filterByCategories(entries: Entry[], cats: Category[]): Entry[] {
+export function filterByCategories(entries: Entry[], cats: CategoryType[]): Entry[] {
   return entries.reduce<Entry[]>(
     (prev, curr) => hasCategories(curr, cats) ? [ ...prev, curr ] : prev,
     [],
   );
 }
 
-export function filterByCategory(entries: Entry[], cat: Category): Entry[] {
+export function filterByCategory(entries: Entry[], cat: CategoryType): Entry[] {
   return filterByCategories(entries, [ cat ]);
 }
 
-export function getTotal(entries: Entry[], cat?: Category): number {
+export function getTotal(entries: Entry[], cat?: CategoryType): number {
   return entries.map((e) => cat ? hasCategory(e, cat) ? e.amount : 0 : e.amount).reduce((p, c) => p + c, 0);
 }
 

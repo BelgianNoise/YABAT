@@ -1,10 +1,10 @@
 import { html, css, CSSResult, TemplateResult, unsafeCSS, query, state } from 'lit-element';
 import { RxLitElement } from 'rx-lit';
 import { defaultCSS } from '../styles/default';
-import { ArrowLeft, Dots, Plus } from '../styles/svgs';
+import { ArrowLeft, Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { Entry } from '../util/models/entry';
-import { Category, convertCategoryToString, mainCategories } from '../util/models/category';
+import { Category, CategoryType, convertCategoryToString, ExpenseCategory, IncomeCategory, mainCategories, MainCategory, SavingsCategory } from '../util/models/category';
 import { define, hydrate } from '../util/components';
 import { CustomSelectComponent } from './custom-select';
 import { CustomSelectMultipleComponent } from './custom-select-multiple';
@@ -13,8 +13,8 @@ import { onEnter } from '../util/on-enter';
 
 export class AddEntryComponent extends RxLitElement {
   
-  @state() mainCatValue: string = Category.EXPENSE;
-  @state() extraCats: Category[] = [];
+  @state() mainCatValue: string = Category.INCOME;
+  @state() extraCats: CategoryType[] = [];
   @query('#amountField') amountField: HTMLInputElement;
   @query('#descriptionField') descriptionField: HTMLTextAreaElement;
 
@@ -32,7 +32,7 @@ export class AddEntryComponent extends RxLitElement {
     const amount = Number(this.amountField.value);
     if (this.mainCatValue && amount) {
       const entry: Entry = {
-        categories: [ this.mainCatValue, ...this.extraCats ],
+        categories: [ this.mainCatValue as CategoryType, ...this.extraCats ],
         amount,
         description: this.descriptionField?.value,
         year: 0, month: Month.JANUARY, id: 'filler', // Filler values
@@ -68,20 +68,25 @@ export class AddEntryComponent extends RxLitElement {
         <p>Main category:</p>
         <custom-select
           @selected="${(ev: CustomEvent<string>) => this.mainCatValue = ev.detail}"
-          .options="${{
-            [Category.EXPENSE]: convertCategoryToString(Category.EXPENSE),
-            [Category.INCOME]: convertCategoryToString(Category.INCOME),
-            [Category.SAVINGS]: convertCategoryToString(Category.SAVINGS),
-          }}"
+          .options="${Object.keys(MainCategory).reduce((acc, val) => ({
+            ...acc,
+            [val]: convertCategoryToString(val),
+          }), {})}"
         >
         </custom-select>
         <p>Extra categories:</p>
         <custom-select-multiple
-          @selected="${(ev: CustomEvent<Category[]>) => this.extraCats = ev.detail}"
-          .options="${Object.keys(Category).reduce((prev, curr) => ({
-            ...prev,
-            ... (!mainCategories.includes(Category[curr]) && { [curr]: convertCategoryToString(curr) }),
-          }), {})}"
+          @selected="${(ev: CustomEvent<CategoryType[]>) => this.extraCats = ev.detail}"
+          .options="${
+            Object.keys(this.mainCatValue === Category.INCOME
+              ? IncomeCategory
+              : this.mainCatValue === Category.EXPENSE
+                ? ExpenseCategory
+                : SavingsCategory
+            ).reduce((prev, curr) => ({
+              ...prev,
+              [curr]: convertCategoryToString(curr),
+            }), {})}"
         >
         </custom-select-multiple>
         <p>Amount:</p>

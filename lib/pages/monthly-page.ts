@@ -6,7 +6,7 @@ import { Month, monthNames } from '../util/models/month';
 import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalNetto } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
-import { Category, convertCategoryToString } from '../util/models/category';
+import { Category, CategoryType, convertCategoryToString } from '../util/models/category';
 import { Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { define, hydrate } from '../util/components';
@@ -253,7 +253,7 @@ export class MonthlyPageComponent extends RxLitElement {
               this.entries
                 .filter(e => e.categories.includes(Category.RECURRING)) // Recurring only
                 .filter((val, _, self) => self
-                  .filter(e => hasCategories(e, val.categories as Category[]))
+                  .filter(e => hasCategories(e, val.categories))
                   .every(e => { console.log('====', e); return Date.parse(`1 ${val.month} ${val.year}`) >= Date.parse(`1 ${e.month} ${e.year}`)})
                 ) // Take latest entry only
                 .filter(val => !(this.filtered.find(e =>

@@ -4,7 +4,7 @@ import { defaultCSS } from '../styles/default';
 import { ArrowLeft, Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { Entry } from '../util/models/entry';
-import { Category, convertCategoryToString } from '../util/models/category';
+import { Category, CategoryType, convertCategoryToString } from '../util/models/category';
 import { parseToOutput } from '../util/helper';
 
 export class RecurringComponent extends RxLitElement {
@@ -36,7 +36,7 @@ export class RecurringComponent extends RxLitElement {
               <p>${parseToOutput(e.amount)}</p>
               <p>
                 ${e.categories
-                  .filter(c => ![Category.RECURRING, Category.EXPENSE].includes(c))
+                  .filter(c => !([Category.RECURRING, Category.EXPENSE] as CategoryType[]).includes(c))
                   .map(c => convertCategoryToString(c))
                   .join(', ')
                 }

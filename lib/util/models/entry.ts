@@ -1,8 +1,9 @@
+import { CategoryType } from "./category";
 import { Month } from "./month";
 
 export interface Entry {
   id: string;
-  categories: string[];
+  categories: CategoryType[];
   amount: number;
   year: number;
   month: Month;
