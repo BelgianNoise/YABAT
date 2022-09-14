@@ -9,17 +9,21 @@ export class CustomSelectMultipleComponent extends RxLitElement {
   @state() options: Record<string, string>;
   @state() showMenu: boolean = false;
   @state() selectedItems: string[] = [];
+  @state() selectedItemsValue: string[] = [];
 
   @query('.container') container: HTMLElement;
   @query('.value-container') valueContainer: HTMLElement;
   @query('.value-container svg') svg: HTMLElement;
   @query('.menu') menu: HTMLElement;
 
-  selected(sel: string) {
-    this.selectedItems = this.selectedItems.includes(sel)
-      ? this.selectedItems.filter((i) => i !== sel)
-      : [ ...this.selectedItems, sel ];
-    this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItems }));
+  selected(k: string, v: string) {
+    this.selectedItems = this.selectedItems.includes(k)
+      ? this.selectedItems.filter((i) => i !== k)
+      : [ ...this.selectedItems, k ];
+    this.dispatchEvent(new CustomEvent('selected', {
+      detail: this.selectedItems,
+    }));
+    this.selectedItemsValue = this.selectedItems.map(i => this.options[i]);
   }
   toggleMenu() {
     this.showMenu = !this.showMenu;
@@ -31,7 +35,7 @@ export class CustomSelectMultipleComponent extends RxLitElement {
       : 'var(--gap-small)';
     this.svg.style.transform = this.showMenu ? 'rotate(180deg)' : 'none';
   }
-  reset() { this.selectedItems = []; }
+  reset() { this.selectedItems, this.selectedItemsValue = []; }
 
   firstUpdated(): void {
     this.valueContainer.addEventListener('click',() => {
@@ -45,7 +49,12 @@ export class CustomSelectMultipleComponent extends RxLitElement {
       <div class="container">
 
         <div class="value-container">
-          <p>${this.selectedItems.length} selected ... </p>
+          <p>
+            ${this.selectedItemsValue.length
+              ? this.selectedItemsValue.join(', ')
+              : `0 selected ...`
+            }
+          </p>
           ${unsafeSVG(Caret)}
         </div>
 
@@ -54,7 +63,7 @@ export class CustomSelectMultipleComponent extends RxLitElement {
             ${Object.entries(this.options).map(([k,v]) => html`
               <div
                 class="menu-item ${this.selectedItems.includes(k) ? 'selected' : ''}"
-                @click="${() => this.selected(k)}"
+                @click="${() => this.selected(k, v)}"
               >
                 <p>${v}</p>
               </div>

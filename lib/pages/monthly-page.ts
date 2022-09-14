@@ -254,7 +254,7 @@ export class MonthlyPageComponent extends RxLitElement {
                 .filter(e => e.categories.includes(Category.RECURRING)) // Recurring only
                 .filter((val, _, self) => self
                   .filter(e => hasCategories(e, val.categories))
-                  .every(e => { console.log('====', e); return Date.parse(`1 ${val.month} ${val.year}`) >= Date.parse(`1 ${e.month} ${e.year}`)})
+                  .every(e => Date.parse(`1 ${val.month} ${val.year}`) >= Date.parse(`1 ${e.month} ${e.year}`))
                 ) // Take latest entry only
                 .filter(val => !(this.filtered.find(e =>
                   e.categories.every(c => val.categories.includes(c))
