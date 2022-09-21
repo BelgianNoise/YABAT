@@ -35,7 +35,11 @@ export class CustomSelectMultipleComponent extends RxLitElement {
       : 'var(--gap-small)';
     this.svg.style.transform = this.showMenu ? 'rotate(180deg)' : 'none';
   }
-  reset() { this.selectedItems, this.selectedItemsValue = []; }
+  reset() {
+    this.selectedItems = [];
+    this.selectedItemsValue = [];
+    this.dispatchEvent(new CustomEvent('selected', { detail: [] }));
+  }
 
   firstUpdated(): void {
     this.valueContainer.addEventListener('click',() => {

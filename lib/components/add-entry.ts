@@ -40,11 +40,18 @@ export class AddEntryComponent extends RxLitElement {
       this.dispatchEvent(new CustomEvent<Entry>('clicked-add', { detail: entry }));
       this.amountField.value = '';
       this.descriptionField.value = '';
-      (this.shadowRoot.querySelector("custom-select-multiple") as CustomSelectMultipleComponent)?.reset();
+      this.resetMultipleSelect();
     }
   }
   clickedMore() {
     this.dispatchEvent(new CustomEvent('show-recurring'));
+  }
+  changedMainCategory(ev: CustomEvent<string>) {
+    this.mainCatValue = ev.detail;
+    this.resetMultipleSelect();
+  }
+  resetMultipleSelect() {
+    (this.shadowRoot.querySelector("custom-select-multiple") as CustomSelectMultipleComponent)?.reset();
   }
 
   render(): TemplateResult {
@@ -67,7 +74,7 @@ export class AddEntryComponent extends RxLitElement {
       <div class="inputs">
         <p>Main category:</p>
         <custom-select
-          @selected="${(ev: CustomEvent<string>) => this.mainCatValue = ev.detail}"
+          @selected="${(ev: CustomEvent<string>) => this.changedMainCategory(ev)}"
           .options="${Object.keys(MainCategory).reduce((acc, val) => ({
             ...acc,
             [val]: convertCategoryToString(val),
