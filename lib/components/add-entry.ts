@@ -4,7 +4,7 @@ import { defaultCSS } from '../styles/default';
 import { ArrowLeft, Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { Entry } from '../util/models/entry';
-import { Category, CategoryType, convertCategoryToString, ExpenseCategory, IncomeCategory, mainCategories, MainCategory, SavingsCategory } from '../util/models/category';
+import { Category, CategoryType, convertCategoryToString, ExpenseCategory, IncomeCategory, InvestmentCategory, mainCategories, MainCategory, SavingsCategory } from '../util/models/category';
 import { define, hydrate } from '../util/components';
 import { CustomSelectComponent } from './custom-select';
 import { CustomSelectMultipleComponent } from './custom-select-multiple';
@@ -78,11 +78,12 @@ export class AddEntryComponent extends RxLitElement {
         <custom-select-multiple
           @selected="${(ev: CustomEvent<CategoryType[]>) => this.extraCats = ev.detail}"
           .options="${
-            Object.keys(this.mainCatValue === Category.INCOME
-              ? IncomeCategory
-              : this.mainCatValue === Category.EXPENSE
-                ? ExpenseCategory
-                : SavingsCategory
+            Object.keys(this.mainCatValue === Category.SAVINGS
+              ? SavingsCategory
+              : {
+                ... this.mainCatValue === Category.EXPENSE ? ExpenseCategory : IncomeCategory,
+                ... InvestmentCategory, 
+              }
             ).reduce((prev, curr) => ({
               ...prev,
               [curr]: convertCategoryToString(curr),
