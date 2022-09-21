@@ -2,11 +2,11 @@ import { html, css, CSSResult, TemplateResult, unsafeCSS, state, query } from 'l
 import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
-import { Month, monthNames } from '../util/models/month';
+import { Month } from '../util/models/month';
 import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalNetto } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
-import { Category, CategoryType, convertCategoryToString } from '../util/models/category';
+import { Category, convertCategoryToString } from '../util/models/category';
 import { Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { define, hydrate } from '../util/components';

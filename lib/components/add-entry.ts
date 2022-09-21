@@ -4,7 +4,7 @@ import { defaultCSS } from '../styles/default';
 import { ArrowLeft, Plus } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 import { Entry } from '../util/models/entry';
-import { Category, CategoryType, convertCategoryToString, ExpenseCategory, IncomeCategory, InvestmentCategory, mainCategories, MainCategory, SavingsCategory } from '../util/models/category';
+import { Category, CategoryType, convertCategoryToString, ExpenseCategory, IncomeCategory, InvestmentCategory, mainCategories, MainCategory, RecurringCategory, SavingsCategory } from '../util/models/category';
 import { define, hydrate } from '../util/components';
 import { CustomSelectComponent } from './custom-select';
 import { CustomSelectMultipleComponent } from './custom-select-multiple';
@@ -88,7 +88,9 @@ export class AddEntryComponent extends RxLitElement {
             Object.keys(this.mainCatValue === Category.SAVINGS
               ? SavingsCategory
               : {
-                ... this.mainCatValue === Category.EXPENSE ? ExpenseCategory : IncomeCategory,
+                ... this.mainCatValue === Category.EXPENSE
+                  ? { ...RecurringCategory, ...ExpenseCategory }
+                  : IncomeCategory,
                 ... InvestmentCategory, 
               }
             ).reduce((prev, curr) => ({

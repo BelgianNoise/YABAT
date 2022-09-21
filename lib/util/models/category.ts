@@ -24,12 +24,15 @@ export enum SavingsCategory {
 }
 
 export enum RecurringCategory {
+  RECURRING = 'RECURRING',
   RENT = 'RENT',
   MORTGAGE = 'MORTGAGE',
+  LOAN = 'LOAN',
   INSURANCE = 'INSURANCE',
     HOUSE_INSURANCE = 'HOUSE_INSURANCE',
     CAR_INSURANCE = 'CAR_INSURANCE',
     HEALTH_INSURANCE = 'HEALTH_INSURANCE',
+    LOAN_BALANCE_INSURANCE = 'LOAN_BALANCE_INSURANCE',
   CREDIT_CARD = 'CREDIT_CARD',
   UTILITIES = 'UTILITIES',
     WATER = 'WATER',
@@ -42,7 +45,6 @@ export enum RecurringCategory {
 }
 
 export enum ExpenseCategory {
-  RECURRING = 'RECURRING',
   HEALTH = 'HEALTH',
     HOSPITAL = 'HOSPITAL',
     MEDICATION = 'MEDICATION',
