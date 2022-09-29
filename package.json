@@ -23,7 +23,7 @@
     "deploy": "npm run build && gh-pages -d dist && shx rm -rf dist"
   },
   "dependencies": {
-    "@xstate/inspect": "^0.4.1",
+    "@xstate/inspect": "^0.7.0",
     "chart.js": "^3.9.1",
     "firebase": "^9.9.4",
     "gh-pages": "^4.0.0",
