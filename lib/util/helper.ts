@@ -68,6 +68,10 @@ export function groupForPieChart(entries: Entry[]): Record<string, { amount: num
       entries = entries.filter((e) => !hasCategory(e, Category[cat]));
     }
   }
+  // Order descending
+  result = Object.entries(result)
+    .sort(([,a],[,b]) => (b as { amount: number }).amount - (a as { amount: number }).amount)
+    .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
   result[Category.OTHER] = { amount: getTotal(entries, Category.EXPENSE), color: colorsgreylight };
   return result;
 }
