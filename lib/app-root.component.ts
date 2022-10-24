@@ -3,7 +3,7 @@ import { RxLitElement } from 'rx-lit';
 import { from, map } from 'rxjs';
 import { createMachine, interpret, Interpreter, State, StateMachine } from 'xstate';
 import { AppContext } from './app.context';
-import { AppEvent, ClickedAddEntryEvent, ClickedDeleteEntryEvent, ClickedHomeEvent, ClickedLogInEvent, ClickedLogOutEvent, ClickedMonthlyEvent } from './app.events';
+import { AppEvent, ClickedAddEntryEvent, ClickedDeleteEntryEvent, ClickedDetailedEvent, ClickedHomeEvent, ClickedLogInEvent, ClickedLogOutEvent, ClickedMonthlyEvent } from './app.events';
 import { appMachine } from './app.machine';
 import { AppDataStates, AppState, AppStates, AppStateSchema, AppWindowStates } from './app.states';
 import { define, hydrate } from './util/components';
@@ -16,6 +16,7 @@ import { Entry } from './util/models/entry';
 import { SidebarComponent } from './components/sidebar';
 import { MonthlyPageComponent } from './pages/monthly-page';
 import { Chart, registerables } from 'chart.js';
+import { DetailedPageComponent } from './pages/detailed-page';
 
 export class AppRootComponent extends RxLitElement {
 
@@ -34,6 +35,7 @@ export class AppRootComponent extends RxLitElement {
     define('login-page', hydrate(LoginPageComponent)());
     define('home-page', hydrate(HomePageComponent)());
     define('monthly-page', hydrate(MonthlyPageComponent)());
+    define('detailed-page', hydrate(DetailedPageComponent)());
     define('page-header', hydrate(PageHeaderComponent)());
     define('loading-bar', hydrate(LoadingBarComponent)());
     define('sidebar-component', hydrate(SidebarComponent)());
@@ -60,6 +62,9 @@ export class AppRootComponent extends RxLitElement {
   }
   clickedMonthly(): void {
     this.actor.send(new ClickedMonthlyEvent());
+  }
+  clickedDetailed(): void {
+    this.actor.send(new ClickedDetailedEvent());
   }
   clickedAddEntry(ev: CustomEvent<Entry>): void {
     this.actor.send(new ClickedAddEntryEvent(ev.detail));
@@ -98,6 +103,7 @@ export class AppRootComponent extends RxLitElement {
           <sidebar-component
             @clicked-home="${() => this.clickedHome()}"
             @clicked-monthly="${() => this.clickedMonthly()}"
+            @clicked-detailed="${() => this.clickedDetailed()}"
             .state="${this.state}"
           ></sidebar-component>
 
@@ -114,6 +120,13 @@ export class AppRootComponent extends RxLitElement {
               @clicked-delete="${(ev) => this.clickedDelete(ev)}"
             ></monthly-page>
           ` : html`` }
+
+          ${ this.state?.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_DETAILED_PAGE }) ? html`
+            <detailed-page
+              .entries="${this.entries}"
+            ></detailed-page>
+          ` : html`` }
+
         </div>
 
       ` }

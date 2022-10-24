@@ -5,7 +5,7 @@ import { html, css, CSSResult, TemplateResult, unsafeCSS, state } from 'lit-elem
 import { RxLitElement } from 'rx-lit';
 import { State } from 'xstate';
 import { defaultCSS } from '../styles/default';
-import { Calendar, Home } from '../styles/svgs';
+import { Calendar, Filter, Home } from '../styles/svgs';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 
 export class SidebarComponent extends RxLitElement {
@@ -18,11 +18,15 @@ export class SidebarComponent extends RxLitElement {
   clickedMonthly(): void {
     this.dispatchEvent(new CustomEvent('clicked-monthly'));
   }
+  clickedDetailed(): void {
+    this.dispatchEvent(new CustomEvent('clicked-detailed'));
+  }
 
   render(): TemplateResult {
 
     const homeCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_HOME_PAGE });
     const monthlyCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_MONTHLY_PAGE });
+    const detailedCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_DETAILED_PAGE });
 
     return html`
       <div
@@ -39,9 +43,12 @@ export class SidebarComponent extends RxLitElement {
         ${unsafeSVG(Calendar)}
         <p>Monthly Overview</p>
       </div>
-      <div class="item">
-        ${unsafeSVG(Home)}
-        <p>Filler</p>
+      <div
+        class="item ${detailedCheck ? 'selected' : ''}"
+        @click="${() => this.clickedDetailed()}"
+      >
+        ${unsafeSVG(Filter)}
+        <p>Detailed Overview</p>
       </div>
     `;
 
