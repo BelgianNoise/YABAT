@@ -1,6 +1,6 @@
 import { html, css, CSSResult, TemplateResult, unsafeCSS, state, query } from 'lit-element';
 import { RxLitElement } from 'rx-lit';
-import { Caret } from '../styles/svgs';
+import { Caret, CheckboxChecked } from '../styles/svgs';
 import { defaultCSS } from '../styles/default';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
 
@@ -66,9 +66,12 @@ export class CustomSelectMultipleComponent extends RxLitElement {
           <div class="menu">
             ${Object.entries(this.options).map(([k,v]) => html`
               <div
-                class="menu-item ${this.selectedItems.includes(k) ? 'selected' : ''}"
+                class="menu-item"
                 @click="${() => this.selected(k, v)}"
               >
+                ${this.selectedItems.includes(k)
+                  ? html`${unsafeSVG(CheckboxChecked)}`
+                  : html`<svg viewBox="0 0 1 1"></svg>`}
                 <p>${v}</p>
               </div>
             `)}
@@ -117,12 +120,18 @@ export class CustomSelectMultipleComponent extends RxLitElement {
         }
         .menu-item {
           padding: var(--gap-small) var(--gap-normal);
+          display: flex;
+          gap: var(--gap-normal);
+          align-items: center;
+          line-height: var(--font-size-medium);
+        }
+        .menu-item svg {
+          height: 20px;
+          border-radius: 5px;
+          border: 2px solid white;
         }
         .menu-item:hover {
-          background-color: var(--colors-primary-dark);
-        }
-        .menu-item.selected {
-          background-color: var(--colors-primary-dark);
+          background-color: var(--colors-grey-lighter);
         }
       `,
     ];
