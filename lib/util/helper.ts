@@ -1,6 +1,7 @@
 import { colorsgreylight, colorsprimarydark } from "../styles/colors";
 import { Category, CategoryType } from "./models/category";
 import { Entry } from "./models/entry";
+import { Month } from "./models/month";
 
 export function hasCategory(entry: Entry, category: CategoryType): boolean {
   return entry.categories.includes(category);
@@ -45,23 +46,25 @@ export function parseToOutput(num: number): string {
   return `€ ${num.toFixed(2)}`;
 }
 
+export const colorMappings = {
+  [Category.RENT]: '#0096FF',
+  [Category.MORTGAGE]: 'blue',
+  [Category.INSURANCE]: 'pink',
+  [Category.UTILITIES]: 'yellow',
+  [Category.INTERNET]: 'lightblue',
+  [Category.HEALTH]: 'red',
+  [Category.HOME]: 'pink',
+  [Category.GROCERIES]: 'green',
+  [Category.TAKE_OUT]: 'orange',
+  [Category.LEISURE]: 'lightyellow',
+  [Category.CLOTHES]: 'brown',
+  [Category.TRANSPORTATION]: 'yellow',
+  [Category.SUBSCRIPTION]: colorsprimarydark,
+};
+
 export function groupForPieChart(entries: Entry[]): Record<string, { amount: number, color: string }> {
   let result = {};
-  for(const [cat, color] of Object.entries({
-    [Category.RENT]: '#0096FF',
-    [Category.MORTGAGE]: 'blue',
-    [Category.INSURANCE]: 'pink',
-    [Category.UTILITIES]: 'yellow',
-    [Category.INTERNET]: 'lightblue',
-    [Category.HEALTH]: 'red',
-    [Category.HOME]: 'pink',
-    [Category.GROCERIES]: 'green',
-    [Category.TAKE_OUT]: 'orange',
-    [Category.LEISURE]: 'lightyellow',
-    [Category.CLOTHES]: 'brown',
-    [Category.TRANSPORTATION]: 'yellow',
-    [Category.SUBSCRIPTION]: colorsprimarydark,
-  })) {
+  for(const [cat, color] of Object.entries(colorMappings)) {
     const total = getTotal(entries, Category[cat]);
     if (total > 0) {
       result[cat] = { amount: total, color };
@@ -73,5 +76,20 @@ export function groupForPieChart(entries: Entry[]): Record<string, { amount: num
     .sort(([,a],[,b]) => (b as { amount: number }).amount - (a as { amount: number }).amount)
     .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
   result[Category.OTHER] = { amount: getTotal(entries, Category.EXPENSE), color: colorsgreylight };
+  return result;
+}
+
+export function groupForDetailedPage(entries: Entry[], categories: CategoryType[]): Record<string, Record<string, { amount: number, color: string }>> {
+  let result = {};
+  for (const mo of Object.values(Month)) {
+    const temp = {};
+    for (const cat of categories ?? []) {
+      const monthEntries = entries.filter((e) => e.month === mo.toUpperCase());
+      const total = getTotal(monthEntries, cat);
+      temp[cat] = { amount: total, color: colorMappings[cat] ?? 'white' };
+    }
+    result[mo] = temp;
+    entries = entries.filter((e) => e.month !== mo.toUpperCase());
+  }
   return result;
 }
