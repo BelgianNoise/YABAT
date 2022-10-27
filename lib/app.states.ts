@@ -19,7 +19,7 @@ export enum AppWindowStates {
   LOGGING_OUT = '[AppWindowState: Logging Out]',
   VIEWING_HOME_PAGE = '[AppWindowState: Viewing Home Page]',
   VIEWING_MONTHLY_PAGE = '[AppWindowState: Viewing Monthly Page]',
-  VIEWING_DETAILED_PAGE = '[AppWindowState: Viewing Detailed Page]',
+  VIEWING_COMPARE_PAGE = '[AppWindowState: Viewing Compare Page]',
 }
 
 export interface AppState {

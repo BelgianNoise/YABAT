@@ -18,15 +18,15 @@ export class SidebarComponent extends RxLitElement {
   clickedMonthly(): void {
     this.dispatchEvent(new CustomEvent('clicked-monthly'));
   }
-  clickedDetailed(): void {
-    this.dispatchEvent(new CustomEvent('clicked-detailed'));
+  clickedCompare(): void {
+    this.dispatchEvent(new CustomEvent('clicked-compare'));
   }
 
   render(): TemplateResult {
 
     const homeCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_HOME_PAGE });
     const monthlyCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_MONTHLY_PAGE });
-    const detailedCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_DETAILED_PAGE });
+    const compareCheck = this.state.matches({ [AppStates.WINDOW]: AppWindowStates.VIEWING_COMPARE_PAGE });
 
     return html`
       <div
@@ -44,11 +44,11 @@ export class SidebarComponent extends RxLitElement {
         <p>Monthly Overview</p>
       </div>
       <div
-        class="item ${detailedCheck ? 'selected' : ''}"
-        @click="${() => this.clickedDetailed()}"
+        class="item ${compareCheck ? 'selected' : ''}"
+        @click="${() => this.clickedCompare()}"
       >
         ${unsafeSVG(Filter)}
-        <p>Detailed Overview</p>
+        <p>Compare Expenses</p>
       </div>
     `;
 

@@ -79,7 +79,7 @@ export function groupForPieChart(entries: Entry[]): Record<string, { amount: num
   return result;
 }
 
-export function groupForDetailedPage(entries: Entry[], categories: CategoryType[]): Record<string, Record<string, { amount: number, color: string }>> {
+export function groupForComparePage(entries: Entry[], categories: CategoryType[]): Record<string, Record<string, { amount: number, color: string }>> {
   let result = {};
   for (const mo of Object.values(Month)) {
     const temp = {};

@@ -5,10 +5,10 @@ import { defaultCSS } from '../../styles/default';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorswhite } from '../../styles/colors';
 import { Month, shortenMonth } from '../../util/models/month';
-import { groupForDetailedPage } from '../../util/helper';
+import { groupForComparePage } from '../../util/helper';
 import { CategoryType, convertCategoryToString } from '../../util/models/category';
 
-export class DetailedChartComponent extends RxLitElement {
+export class CompareChartComponent extends RxLitElement {
 
   @state() entries: Entry[];
   @state() categories: CategoryType[];
@@ -27,7 +27,7 @@ export class DetailedChartComponent extends RxLitElement {
 
   updated(): void {
     if (!this.chart) return;
-    const processedData = groupForDetailedPage(this.entries, this.categories);
+    const processedData = groupForComparePage(this.entries, this.categories);
     const datasetoptions = {
       borderColor: colorsgreylight,
       borderWidth: 1,
@@ -47,7 +47,7 @@ export class DetailedChartComponent extends RxLitElement {
         })),
       ],
     };
-    data.datasets = data.datasets?.length ? data.datasets : [{}];
+    data.datasets = data.datasets.length ? data.datasets : [{}];
     const config: ChartConfiguration = {
       type: 'bar',
       data: data,
@@ -56,6 +56,7 @@ export class DetailedChartComponent extends RxLitElement {
         responsive: true,
         maintainAspectRatio: false,
         layout: { padding: 0 },
+        plugins: { legend: { display: !!data.datasets[0].label } },
       },
     };
 

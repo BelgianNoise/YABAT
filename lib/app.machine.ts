@@ -74,7 +74,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
         [AppEvents.CLICKED_LOG_OUT]: `.${AppWindowStates.LOGGING_OUT}`,
         [AppEvents.CLICKED_HOME]: `.${AppWindowStates.VIEWING_HOME_PAGE}`,
         [AppEvents.CLICKED_MONTHLY]: `.${AppWindowStates.VIEWING_MONTHLY_PAGE}`,
-        [AppEvents.CLICKED_DETAILED]: `.${AppWindowStates.VIEWING_DETAILED_PAGE}`,
+        [AppEvents.CLICKED_COMPARE]: `.${AppWindowStates.VIEWING_COMPARE_PAGE}`,
       },
       states: {
         [AppWindowStates.LOGGING_IN]: {
@@ -97,7 +97,7 @@ export const appMachine: MachineConfig<AppContext, AppStateSchema, AppEvent> = {
         },
         [AppWindowStates.VIEWING_HOME_PAGE]: { },
         [AppWindowStates.VIEWING_MONTHLY_PAGE]: { },
-        [AppWindowStates.VIEWING_DETAILED_PAGE]: { },
+        [AppWindowStates.VIEWING_COMPARE_PAGE]: { },
         [AppWindowStates.LOGGING_OUT]: {
           invoke: {
             src: (c, e) => logout(),
