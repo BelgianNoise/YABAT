@@ -1,4 +1,4 @@
-# YABAT - Yet Another Budgeting App/Tool
+# YABAT - Yet Another Budgeting App/Tool [yabat.be](https://yabat.be)
 
 YABAT is a web app that makes it easy to keep track of your income and expenses. This app allows you to easily add your different incomes and expenses and will give you an overview of how much money you spend and on what, this is done by various calculated numbers and charts.
 
