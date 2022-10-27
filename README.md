@@ -9,9 +9,3 @@ YABAT is build using Typescript, lit, vite, chart.js and xstate. For authenticat
 NOTE:
 - YABAT does not ask you to link a bank account or make connections with any financial institutions.
 - All data is stored in a Firebase Firestore instance and is in theory accessable by me. Firestore Security Rules are in place to prevent users from reading or editiing each others data.
-
----
-
-Screenshot of current state:
-![image](https://user-images.githubusercontent.com/38424924/188324758-a79c607d-fa1f-4df2-b3fc-ffb39ef5c44f.png)
-
