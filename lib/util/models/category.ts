@@ -56,14 +56,19 @@ export enum ExpenseCategory {
     GAMES = 'GAMES',
   CLOTHES = 'CLOTHES',
   TRANSPORTATION = 'TRANSPORTATION',
+}
+
+export enum GeneralCategory {
+  GIFT = 'GIFT',
   OTHER = 'OTHER',
 }
 
-export type CategoryType = MainCategory | IncomeCategory | ExpenseCategory | SavingsCategory | InvestmentCategory | RecurringCategory;
+export type CategoryType = MainCategory | IncomeCategory | ExpenseCategory | GeneralCategory | SavingsCategory | InvestmentCategory | RecurringCategory;
 export const Category = {
   ...MainCategory,
   ...IncomeCategory,
   ...ExpenseCategory,
+  ...GeneralCategory,
   ...SavingsCategory,
   ...InvestmentCategory,
   ...RecurringCategory,
