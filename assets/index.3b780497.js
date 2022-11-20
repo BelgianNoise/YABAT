@@ -1,4 +1,4 @@
-var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPropertySymbols,a=Object.prototype.propertyIsEnumerable,o=(e,r,a)=>r in e?t(e,r,{enumerable:!0,configurable:!0,writable:!0,value:a}):e[r]=a,i=(t,i)=>{for(var s in i||(i={}))e.call(i,s)&&o(t,s,i[s]);if(r)for(var s of r(i))a.call(i,s)&&o(t,s,i[s]);return t};import{g as s,s as n,a as l,b as c,c as d,D as p,U as h,d as g,A as v,x as u,E as m,e as y,l as E,f as b,h as f,q as C,R as w,i as I,u as A,j as x,k as O,C as k,m as N,r as L,n as D,o as M,p as S,t as G,v as T}from"./vendor.b76bae32.js";!function(t=".",e="__import__"){try{self[e]=new Function("u","return import(u)")}catch(r){const a=new URL(t,location),o=t=>{URL.revokeObjectURL(t.src),t.remove()};self[e]=t=>new Promise(((r,i)=>{const s=new URL(t,a);if(self[e].moduleMap[s])return r(self[e].moduleMap[s]);const n=new Blob([`import * as m from '${s}';`,`${e}.moduleMap['${s}']=m;`],{type:"text/javascript"}),l=Object.assign(document.createElement("script"),{type:"module",src:URL.createObjectURL(n),onerror(){i(new Error(`Failed to import: ${t}`)),o(l)},onload(){r(self[e].moduleMap[s]),o(l)}});document.head.appendChild(l)})),self[e].moduleMap={}}}("assets/");const _=(t,e)=>{customElements.get(t)||customElements.define(t,e)},$=t=>(...e)=>class extends t{constructor(){super(...e)}};var P,R,V,j,F,H,U,W;(R=P||(P={})).LOGGED_IN_SUCCESFULLY="[AppEvents: Logged In Succesfully]",R.CLICKED_LOG_IN="[AppEvents: Clicked Log In]",R.CLICKED_LOG_OUT="[AppEvents: Clicked Log Out]",R.CLICKED_HOME="[AppEvents: Clicked Home]",R.CLICKED_MONTHLY="[AppEvents: Clicked Monthly]",R.CLICKED_COMPARE="[AppEvents: Clicked Compare]",R.CLICKED_ADD_ENTRY="[AppEvents: Clicked Add Entry]",R.CLICKED_DELETE="[AppEvents: Clicked Delete]";class z{constructor(t,e){this.email=t,this.password=e,this.type=P.CLICKED_LOG_IN}}class B{constructor(){this.type=P.CLICKED_LOG_OUT}}class Y{constructor(){this.type=P.CLICKED_HOME}}class K{constructor(){this.type=P.CLICKED_MONTHLY}}class X{constructor(){this.type=P.CLICKED_COMPARE}}class Z{constructor(t){this.entry=t,this.type=P.CLICKED_ADD_ENTRY}}class J{constructor(t){this.id=t,this.type=P.CLICKED_DELETE}}(j=V||(V={})).WINDOW="[AppState: Window]",j.DATA="[AppState: Data]",(H=F||(F={})).LOADING_DATA="[AppDataState: Loading Data]",H.ADDING_DATA="[AppDataState: Adding Data]",H.DELETEING_DATA="[AppDataState: Deleteing Data]",H.IDLE="[AppDataState: Idle]",(W=U||(U={})).VIEWING_LOGIN_PAGE="[AppWindowState: Viewing Login Page]",W.LOGGING_IN="[AppWindowState: Logging In]",W.LOGGING_OUT="[AppWindowState: Logging Out]",W.VIEWING_HOME_PAGE="[AppWindowState: Viewing Home Page]",W.VIEWING_MONTHLY_PAGE="[AppWindowState: Viewing Monthly Page]",W.VIEWING_COMPARE_PAGE="[AppWindowState: Viewing Compare Page]";const q={type:"parallel",id:"app",states:{[V.DATA]:{initial:F.IDLE,states:{[F.IDLE]:{id:F.IDLE,on:{[P.LOGGED_IN_SUCCESFULLY]:F.LOADING_DATA,[P.CLICKED_ADD_ENTRY]:F.ADDING_DATA,[P.CLICKED_DELETE]:F.DELETEING_DATA}},[F.LOADING_DATA]:{id:F.LOADING_DATA,invoke:{src:(t,e)=>async function(){const t=p(h(),s().currentUser.email),e=await g(t),r=[];return e.forEach((t=>{const e=t.data();r.push({id:t.id,amount:e.amount,year:e.year,month:e.month,description:e.description,categories:e.categories})})),r}(),onDone:{actions:y({data:(t,e)=>e.data}),target:F.IDLE},onError:{actions:E(((t,e)=>console.log("Error Loading Data:",e))),target:F.IDLE}}},[F.ADDING_DATA]:{id:F.ADDING_DATA,invoke:{src:(t,e)=>async function(t,e){if(!(e instanceof Z))throw new Error("");console.log("Saving: ",e.entry);const r=p(h(),s().currentUser.email);delete e.entry.id;const a=await v(r,e.entry);return i(i({},e.entry),{id:a.id})}(0,e),onDone:{actions:y({data:(t,e)=>[...t.data,e.data]}),target:F.IDLE},onError:{actions:E(((t,e)=>console.log("Error Adding Data:",e))),target:F.IDLE}}},[F.DELETEING_DATA]:{id:F.DELETEING_DATA,invoke:{src:(t,e)=>async function(t,e){if(!(e instanceof J))throw new Error("");console.log("Deleteing ID: ",e.id);const r=u(h(),s().currentUser.email,e.id);return await m(r),e.id}(0,e),onDone:{actions:y({data:(t,e)=>t.data.filter((t=>t.id!==e.data))}),target:F.IDLE},onError:{actions:E(((t,e)=>console.log("Error Deleteing Data:",e))),target:F.IDLE}}}}},[V.WINDOW]:{initial:U.LOGGING_IN,on:{[P.CLICKED_LOG_OUT]:`.${U.LOGGING_OUT}`,[P.CLICKED_HOME]:`.${U.VIEWING_HOME_PAGE}`,[P.CLICKED_MONTHLY]:`.${U.VIEWING_MONTHLY_PAGE}`,[P.CLICKED_COMPARE]:`.${U.VIEWING_COMPARE_PAGE}`},states:{[U.LOGGING_IN]:{invoke:{src:(t,e)=>async function(t,e){const r=s();if(await n(r,d),!r.currentUser){if(!(e instanceof z))throw new Error("Must be ClickedLogInEvent (Error can occur on initial load of app)");await l(r,e.email,e.password)}}(0,e),onDone:{actions:b(new class{constructor(){this.type=P.LOGGED_IN_SUCCESFULLY}}),target:U.VIEWING_HOME_PAGE},onError:{actions:E(((t,e)=>console.log("Error Logging In:",e))),target:U.VIEWING_LOGIN_PAGE}}},[U.VIEWING_LOGIN_PAGE]:{on:{[P.CLICKED_LOG_IN]:U.LOGGING_IN}},[U.VIEWING_HOME_PAGE]:{},[U.VIEWING_MONTHLY_PAGE]:{},[U.VIEWING_COMPARE_PAGE]:{},[U.LOGGING_OUT]:{invoke:{src:(t,e)=>async function(){const t=s();await c(t)}(),onDone:U.VIEWING_LOGIN_PAGE,onError:U.VIEWING_LOGIN_PAGE}}}}}};function Q(t,e){null==t||t.addEventListener("keypress",(t=>{"Enter"===t.key&&e()}))}const tt=f`
+var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPropertySymbols,a=Object.prototype.propertyIsEnumerable,o=(e,r,a)=>r in e?t(e,r,{enumerable:!0,configurable:!0,writable:!0,value:a}):e[r]=a,i=(t,i)=>{for(var s in i||(i={}))e.call(i,s)&&o(t,s,i[s]);if(r)for(var s of r(i))a.call(i,s)&&o(t,s,i[s]);return t};import{g as s,s as n,a as l,b as c,c as d,D as p,U as h,d as g,A as v,x as u,E as m,e as y,l as E,f as b,h as f,q as C,R as w,i as I,u as A,j as x,k as O,C as k,m as N,r as L,n as D,o as G,p as M,t as S,v as T}from"./vendor.b76bae32.js";!function(t=".",e="__import__"){try{self[e]=new Function("u","return import(u)")}catch(r){const a=new URL(t,location),o=t=>{URL.revokeObjectURL(t.src),t.remove()};self[e]=t=>new Promise(((r,i)=>{const s=new URL(t,a);if(self[e].moduleMap[s])return r(self[e].moduleMap[s]);const n=new Blob([`import * as m from '${s}';`,`${e}.moduleMap['${s}']=m;`],{type:"text/javascript"}),l=Object.assign(document.createElement("script"),{type:"module",src:URL.createObjectURL(n),onerror(){i(new Error(`Failed to import: ${t}`)),o(l)},onload(){r(self[e].moduleMap[s]),o(l)}});document.head.appendChild(l)})),self[e].moduleMap={}}}("assets/");const _=(t,e)=>{customElements.get(t)||customElements.define(t,e)},$=t=>(...e)=>class extends t{constructor(){super(...e)}};var P,R,V,j,F,H,U,W;(R=P||(P={})).LOGGED_IN_SUCCESFULLY="[AppEvents: Logged In Succesfully]",R.CLICKED_LOG_IN="[AppEvents: Clicked Log In]",R.CLICKED_LOG_OUT="[AppEvents: Clicked Log Out]",R.CLICKED_HOME="[AppEvents: Clicked Home]",R.CLICKED_MONTHLY="[AppEvents: Clicked Monthly]",R.CLICKED_COMPARE="[AppEvents: Clicked Compare]",R.CLICKED_ADD_ENTRY="[AppEvents: Clicked Add Entry]",R.CLICKED_DELETE="[AppEvents: Clicked Delete]";class z{constructor(t,e){this.email=t,this.password=e,this.type=P.CLICKED_LOG_IN}}class B{constructor(){this.type=P.CLICKED_LOG_OUT}}class Y{constructor(){this.type=P.CLICKED_HOME}}class K{constructor(){this.type=P.CLICKED_MONTHLY}}class X{constructor(){this.type=P.CLICKED_COMPARE}}class Z{constructor(t){this.entry=t,this.type=P.CLICKED_ADD_ENTRY}}class J{constructor(t){this.id=t,this.type=P.CLICKED_DELETE}}(j=V||(V={})).WINDOW="[AppState: Window]",j.DATA="[AppState: Data]",(H=F||(F={})).LOADING_DATA="[AppDataState: Loading Data]",H.ADDING_DATA="[AppDataState: Adding Data]",H.DELETEING_DATA="[AppDataState: Deleteing Data]",H.IDLE="[AppDataState: Idle]",(W=U||(U={})).VIEWING_LOGIN_PAGE="[AppWindowState: Viewing Login Page]",W.LOGGING_IN="[AppWindowState: Logging In]",W.LOGGING_OUT="[AppWindowState: Logging Out]",W.VIEWING_HOME_PAGE="[AppWindowState: Viewing Home Page]",W.VIEWING_MONTHLY_PAGE="[AppWindowState: Viewing Monthly Page]",W.VIEWING_COMPARE_PAGE="[AppWindowState: Viewing Compare Page]";const q={type:"parallel",id:"app",states:{[V.DATA]:{initial:F.IDLE,states:{[F.IDLE]:{id:F.IDLE,on:{[P.LOGGED_IN_SUCCESFULLY]:F.LOADING_DATA,[P.CLICKED_ADD_ENTRY]:F.ADDING_DATA,[P.CLICKED_DELETE]:F.DELETEING_DATA}},[F.LOADING_DATA]:{id:F.LOADING_DATA,invoke:{src:(t,e)=>async function(){const t=p(h(),s().currentUser.email),e=await g(t),r=[];return e.forEach((t=>{const e=t.data();r.push({id:t.id,amount:e.amount,year:e.year,month:e.month,description:e.description,categories:e.categories})})),r}(),onDone:{actions:y({data:(t,e)=>e.data}),target:F.IDLE},onError:{actions:E(((t,e)=>console.log("Error Loading Data:",e))),target:F.IDLE}}},[F.ADDING_DATA]:{id:F.ADDING_DATA,invoke:{src:(t,e)=>async function(t,e){if(!(e instanceof Z))throw new Error("");console.log("Saving: ",e.entry);const r=p(h(),s().currentUser.email);delete e.entry.id;const a=await v(r,e.entry);return i(i({},e.entry),{id:a.id})}(0,e),onDone:{actions:y({data:(t,e)=>[...t.data,e.data]}),target:F.IDLE},onError:{actions:E(((t,e)=>console.log("Error Adding Data:",e))),target:F.IDLE}}},[F.DELETEING_DATA]:{id:F.DELETEING_DATA,invoke:{src:(t,e)=>async function(t,e){if(!(e instanceof J))throw new Error("");console.log("Deleteing ID: ",e.id);const r=u(h(),s().currentUser.email,e.id);return await m(r),e.id}(0,e),onDone:{actions:y({data:(t,e)=>t.data.filter((t=>t.id!==e.data))}),target:F.IDLE},onError:{actions:E(((t,e)=>console.log("Error Deleteing Data:",e))),target:F.IDLE}}}}},[V.WINDOW]:{initial:U.LOGGING_IN,on:{[P.CLICKED_LOG_OUT]:`.${U.LOGGING_OUT}`,[P.CLICKED_HOME]:`.${U.VIEWING_HOME_PAGE}`,[P.CLICKED_MONTHLY]:`.${U.VIEWING_MONTHLY_PAGE}`,[P.CLICKED_COMPARE]:`.${U.VIEWING_COMPARE_PAGE}`},states:{[U.LOGGING_IN]:{invoke:{src:(t,e)=>async function(t,e){const r=s();if(await n(r,d),!r.currentUser){if(!(e instanceof z))throw new Error("Must be ClickedLogInEvent (Error can occur on initial load of app)");await l(r,e.email,e.password)}}(0,e),onDone:{actions:b(new class{constructor(){this.type=P.LOGGED_IN_SUCCESFULLY}}),target:U.VIEWING_HOME_PAGE},onError:{actions:E(((t,e)=>console.log("Error Logging In:",e))),target:U.VIEWING_LOGIN_PAGE}}},[U.VIEWING_LOGIN_PAGE]:{on:{[P.CLICKED_LOG_IN]:U.LOGGING_IN}},[U.VIEWING_HOME_PAGE]:{},[U.VIEWING_MONTHLY_PAGE]:{},[U.VIEWING_COMPARE_PAGE]:{},[U.LOGGING_OUT]:{invoke:{src:(t,e)=>async function(){const t=s();await c(t)}(),onDone:U.VIEWING_LOGIN_PAGE,onError:U.VIEWING_LOGIN_PAGE}}}}}};function Q(t,e){null==t||t.addEventListener("keypress",(t=>{"Enter"===t.key&&e()}))}const tt=f`
   body, html {
     width: 100%;
     height: 100%;
@@ -176,11 +176,11 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           -o-filter: blur(8px);
           -ms-filter: blur(8px);
         }
-      `]}}lt([C("#email")],ct.prototype,"emailInput",2),lt([C("#password")],ct.prototype,"passwordInput",2);var dt,pt;(pt=dt||(dt={})).JANUARY="January",pt.FEBRUARY="February",pt.MARCH="March",pt.APRIL="April",pt.MAY="May",pt.JUNE="June",pt.JULY="July",pt.AUGUST="August",pt.SEPTEMBER="September",pt.OCTOBER="October",pt.NOVEMBER="November",pt.DECEMBER="December";const ht=["January","February","March","April","May","June","July","August","September","October","November","December"];function gt(t){return t.toString().slice(0,3)}var vt,ut,mt,yt,Et,bt,ft,Ct,wt,It,At,xt;(ut=vt||(vt={})).INCOME="INCOME",ut.EXPENSE="EXPENSE",ut.SAVINGS="SAVINGS",(yt=mt||(mt={})).INVESTMENT="INVESTMENT",yt.STOCKS="STOCKS",yt.CRYPTO="CRYPTO",(bt=Et||(Et={})).SALARY="SALARY",bt.SOCIAL_BENEFITS="SOCIAL_BENEFITS",bt.MEAL_VOUCHERS="MEAL_VOUCHERS",bt.REPAYMENT="REPAYMENT",bt.SECOND_HAND_SALE="SECOND_HAND_SALE",(Ct=ft||(ft={})).REGULAR_SAVINGS="REGULAR_SAVINGS",Ct.PENSION="PERSION",(It=wt||(wt={})).RECURRING="RECURRING",It.RENT="RENT",It.MORTGAGE="MORTGAGE",It.LOAN="LOAN",It.INSURANCE="INSURANCE",It.HOUSE_INSURANCE="HOUSE_INSURANCE",It.CAR_INSURANCE="CAR_INSURANCE",It.HEALTH_INSURANCE="HEALTH_INSURANCE",It.LOAN_BALANCE_INSURANCE="LOAN_BALANCE_INSURANCE",It.CREDIT_CARD="CREDIT_CARD",It.UTILITIES="UTILITIES",It.WATER="WATER",It.ELECTRIC="ELECTRIC",It.NATURAL_GAS="NATURAL_GAS",It.GAS="GAS",It.INTERNET="INTERNET",It.PHONE="PHONE",It.SUBSCRIPTION="SUBSCRIPTION",(xt=At||(At={})).HEALTH="HEALTH",xt.HOSPITAL="HOSPITAL",xt.MEDICATION="MEDICATION",xt.GROCERIES="GROCERIES",xt.HOME="HOME",xt.TAKE_OUT="TAKE_OUT",xt.LEISURE="LEISURE",xt.VACATION="VACATION",xt.GAMES="GAMES",xt.CLOTHES="CLOTHES",xt.TRANSPORTATION="TRANSPORTATION",xt.OTHER="OTHER";const Ot=i(i(i(i(i(i({},vt),Et),At),ft),mt),wt);function kt(t){return t.split("_").map((t=>`${t.charAt(0)}${t.toLowerCase().slice(1)}`)).join(" ")}function Nt(t,e){return t.categories.includes(e)}function Lt(t,e){return t.map((t=>e?Nt(t,e)?t.amount:0:t.amount)).reduce(((t,e)=>t+e),0)}function Dt(t){return Lt(t,Ot.INCOME)}function Mt(t){return Lt(t,Ot.EXPENSE)}function St(t){return Lt(t,Ot.SAVINGS)}function Gt(t){return`€ ${t.toFixed(2)}`}const Tt={[Ot.RENT]:"#0096FF",[Ot.MORTGAGE]:"blue",[Ot.INSURANCE]:"pink",[Ot.UTILITIES]:"yellow",[Ot.INTERNET]:"lightblue",[Ot.HEALTH]:"red",[Ot.HOME]:"pink",[Ot.GROCERIES]:"green",[Ot.TAKE_OUT]:"orange",[Ot.LEISURE]:"lightyellow",[Ot.CLOTHES]:"brown",[Ot.TRANSPORTATION]:"yellow",[Ot.SUBSCRIPTION]:"#00AA5F"};function _t(t){let e={};for(const[r,a]of Object.entries(Tt)){const o=Lt(t,Ot[r]);o>0&&(e[r]={amount:o,color:a},t=t.filter((t=>!Nt(t,Ot[r]))))}return e=Object.entries(e).sort((([,t],[,e])=>e.amount-t.amount)).reduce(((t,[e,r])=>i(i({},t),{[e]:r})),{}),e[Ot.OTHER]={amount:Lt(t,Ot.EXPENSE),color:"#444"},e}var $t=Object.defineProperty,Pt=Object.getOwnPropertyDescriptor,Rt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Pt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&$t(e,r,i),i};class Vt extends w{render(){return I`
+      `]}}lt([C("#email")],ct.prototype,"emailInput",2),lt([C("#password")],ct.prototype,"passwordInput",2);var dt,pt;(pt=dt||(dt={})).JANUARY="January",pt.FEBRUARY="February",pt.MARCH="March",pt.APRIL="April",pt.MAY="May",pt.JUNE="June",pt.JULY="July",pt.AUGUST="August",pt.SEPTEMBER="September",pt.OCTOBER="October",pt.NOVEMBER="November",pt.DECEMBER="December";const ht=["January","February","March","April","May","June","July","August","September","October","November","December"];function gt(t){return t.toString().slice(0,3)}var vt,ut,mt,yt,Et,bt,ft,Ct,wt,It,At,xt,Ot,kt;(ut=vt||(vt={})).INCOME="INCOME",ut.EXPENSE="EXPENSE",ut.SAVINGS="SAVINGS",(yt=mt||(mt={})).INVESTMENT="INVESTMENT",yt.STOCKS="STOCKS",yt.CRYPTO="CRYPTO",(bt=Et||(Et={})).SALARY="SALARY",bt.SOCIAL_BENEFITS="SOCIAL_BENEFITS",bt.MEAL_VOUCHERS="MEAL_VOUCHERS",bt.REPAYMENT="REPAYMENT",bt.SECOND_HAND_SALE="SECOND_HAND_SALE",(Ct=ft||(ft={})).REGULAR_SAVINGS="REGULAR_SAVINGS",Ct.PENSION="PERSION",(It=wt||(wt={})).RECURRING="RECURRING",It.RENT="RENT",It.MORTGAGE="MORTGAGE",It.LOAN="LOAN",It.INSURANCE="INSURANCE",It.HOUSE_INSURANCE="HOUSE_INSURANCE",It.CAR_INSURANCE="CAR_INSURANCE",It.HEALTH_INSURANCE="HEALTH_INSURANCE",It.LOAN_BALANCE_INSURANCE="LOAN_BALANCE_INSURANCE",It.CREDIT_CARD="CREDIT_CARD",It.UTILITIES="UTILITIES",It.WATER="WATER",It.ELECTRIC="ELECTRIC",It.NATURAL_GAS="NATURAL_GAS",It.GAS="GAS",It.INTERNET="INTERNET",It.PHONE="PHONE",It.SUBSCRIPTION="SUBSCRIPTION",(xt=At||(At={})).HEALTH="HEALTH",xt.HOSPITAL="HOSPITAL",xt.MEDICATION="MEDICATION",xt.GROCERIES="GROCERIES",xt.HOME="HOME",xt.TAKE_OUT="TAKE_OUT",xt.LEISURE="LEISURE",xt.VACATION="VACATION",xt.GAMES="GAMES",xt.CLOTHES="CLOTHES",xt.TRANSPORTATION="TRANSPORTATION",(kt=Ot||(Ot={})).GIFT="GIFT",kt.OTHER="OTHER";const Nt=i(i(i(i(i(i(i({},vt),Et),At),Ot),ft),mt),wt);function Lt(t){return t.split("_").map((t=>`${t.charAt(0)}${t.toLowerCase().slice(1)}`)).join(" ")}function Dt(t,e){return t.categories.includes(e)}function Gt(t,e){return t.map((t=>e?Dt(t,e)?t.amount:0:t.amount)).reduce(((t,e)=>t+e),0)}function Mt(t){return Gt(t,Nt.INCOME)}function St(t){return Gt(t,Nt.EXPENSE)}function Tt(t){return Gt(t,Nt.SAVINGS)}function _t(t){return`€ ${t.toFixed(2)}`}const $t={[Nt.RENT]:"#0096FF",[Nt.MORTGAGE]:"blue",[Nt.INSURANCE]:"pink",[Nt.UTILITIES]:"yellow",[Nt.INTERNET]:"lightblue",[Nt.HEALTH]:"red",[Nt.HOME]:"pink",[Nt.GROCERIES]:"green",[Nt.TAKE_OUT]:"orange",[Nt.LEISURE]:"lightyellow",[Nt.CLOTHES]:"brown",[Nt.TRANSPORTATION]:"yellow",[Nt.SUBSCRIPTION]:"#00AA5F"};function Pt(t){let e={};for(const[r,a]of Object.entries($t)){const o=Gt(t,Nt[r]);o>0&&(e[r]={amount:o,color:a},t=t.filter((t=>!Dt(t,Nt[r]))))}return e=Object.entries(e).sort((([,t],[,e])=>e.amount-t.amount)).reduce(((t,[e,r])=>i(i({},t),{[e]:r})),{}),e[Nt.OTHER]={amount:Gt(t,Nt.EXPENSE),color:"#444"},e}var Rt=Object.defineProperty,Vt=Object.getOwnPropertyDescriptor,jt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Vt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Rt(e,r,i),i};class Ft extends w{render(){return I`
       <div>
         <canvas id="chart"></canvas>
       </div>
-    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=Dt(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#1DCA7F",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
+    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=Mt(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#1DCA7F",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
         :host {
           display: flex;
         }
@@ -190,11 +190,11 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         canvas {
           width: 100% !important;
         }
-      `]}}Rt([O()],Vt.prototype,"entries",2),Rt([C("#chart")],Vt.prototype,"chart",2);var jt=Object.defineProperty,Ft=Object.getOwnPropertyDescriptor,Ht=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Ft(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&jt(e,r,i),i};class Ut extends w{render(){return I`
+      `]}}jt([O()],Ft.prototype,"entries",2),jt([C("#chart")],Ft.prototype,"chart",2);var Ht=Object.defineProperty,Ut=Object.getOwnPropertyDescriptor,Wt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Ut(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Ht(e,r,i),i};class zt extends w{render(){return I`
       <div>
         <canvas id="chart"></canvas>
       </div>
-    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=Mt(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#FF0000",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
+    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=St(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#FF0000",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
         :host {
           display: flex;
         }
@@ -204,11 +204,11 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         canvas {
           width: 100% !important;
         }
-      `]}}Ht([O()],Ut.prototype,"entries",2),Ht([C("#chart")],Ut.prototype,"chart",2);var Wt=Object.defineProperty,zt=Object.getOwnPropertyDescriptor,Bt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?zt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Wt(e,r,i),i};class Yt extends w{render(){return I`
+      `]}}Wt([O()],zt.prototype,"entries",2),Wt([C("#chart")],zt.prototype,"chart",2);var Bt=Object.defineProperty,Yt=Object.getOwnPropertyDescriptor,Kt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Yt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Bt(e,r,i),i};class Xt extends w{render(){return I`
       <div>
         <canvas id="chart"></canvas>
       </div>
-    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=St(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#6898AE",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
+    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=Tt(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#6898AE",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
         :host {
           display: flex;
         }
@@ -218,11 +218,11 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         canvas {
           width: 100% !important;
         }
-      `]}}Bt([O()],Yt.prototype,"entries",2),Bt([C("#chart")],Yt.prototype,"chart",2);var Kt=Object.defineProperty,Xt=Object.getOwnPropertyDescriptor,Zt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Xt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Kt(e,r,i),i};class Jt extends w{render(){return I`
+      `]}}Kt([O()],Xt.prototype,"entries",2),Kt([C("#chart")],Xt.prototype,"chart",2);var Zt=Object.defineProperty,Jt=Object.getOwnPropertyDescriptor,qt=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Jt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Zt(e,r,i),i};class Qt extends w{render(){return I`
       <div>
         <canvas id="chart"></canvas>
       </div>
-    `}updated(){var t;if(!this.chart)return;const e=_t(this.entries),r=Object.values(e).map((t=>t.amount)).reduce(((t,e)=>t+e),0),a={type:"doughnut",data:{labels:[...Object.entries(e).map((([t,e])=>`${kt(t)} (${parseFloat((e.amount/r*100).toString()).toFixed(2)} %)`))],datasets:[{data:[...Object.values(e).map((t=>t.amount))],backgroundColor:[...Object.values(e).map((t=>t.color))],borderColor:"#444",borderWidth:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!0,position:"left",align:"end"}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,a)}static get styles(){return[x(tt),f`
+    `}updated(){var t;if(!this.chart)return;const e=Pt(this.entries),r=Object.values(e).map((t=>t.amount)).reduce(((t,e)=>t+e),0),a={type:"doughnut",data:{labels:[...Object.entries(e).map((([t,e])=>`${Lt(t)} (${parseFloat((e.amount/r*100).toString()).toFixed(2)} %)`))],datasets:[{data:[...Object.values(e).map((t=>t.amount))],backgroundColor:[...Object.values(e).map((t=>t.color))],borderColor:"#444",borderWidth:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!0,position:"left",align:"end"}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,a)}static get styles(){return[x(tt),f`
         :host {
           display: flex;
         }
@@ -232,11 +232,11 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         canvas {
           width: 100% !important;
         }
-      `]}}Zt([O()],Jt.prototype,"entries",2),Zt([C("#chart")],Jt.prototype,"chart",2);var qt=Object.defineProperty,Qt=Object.getOwnPropertyDescriptor,te=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Qt(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&qt(e,r,i),i};class ee extends w{render(){return I`
+      `]}}qt([O()],Qt.prototype,"entries",2),qt([C("#chart")],Qt.prototype,"chart",2);var te=Object.defineProperty,ee=Object.getOwnPropertyDescriptor,re=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?ee(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&te(e,r,i),i};class ae extends w{render(){return I`
       <div>
         <canvas id="chart"></canvas>
       </div>
-    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=Dt(r)-Mt(r)-St(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#666",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
+    `}updated(){var t;const e={};if(Object.keys(dt).forEach((t=>{const r=this.entries.filter((e=>e.month===t));e[t]=Mt(r)-St(r)-Tt(r)})),!this.chart)return;const r={type:"bar",data:{labels:ht.map((t=>gt(t))),datasets:[{data:Object.values(e),backgroundColor:"#666",hoverBackgroundColor:"#FFF",borderColor:"#444",borderWidth:1,barPercentage:1,categoryPercentage:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,r)}static get styles(){return[x(tt),f`
         :host {
           display: flex;
         }
@@ -246,12 +246,12 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         canvas {
           width: 100% !important;
         }
-      `]}}te([O()],ee.prototype,"entries",2),te([C("#chart")],ee.prototype,"chart",2);var re=Object.defineProperty,ae=Object.getOwnPropertyDescriptor,oe=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?ae(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&re(e,r,i),i};class ie extends w{constructor(){super(),this.currentYear=(new Date).getUTCFullYear(),this.tooltipText=N('Charts on this page are not comparable in terms of scale, to compare charts please look at the Y axis too!<br/><br/>The expenses and savings may not add up to the total income listed on this page, a portion of the income may not be allocated to an expense nor a saving. You can find further details on the "Monthly Overview" page for that month.'),_("income-chart",$(Vt)()),_("expenses-chart",$(Ut)()),_("savings-chart",$(Yt)()),_("distribution-chart",$(Jt)()),_("netto-chart",$(ee)())}render(){var t;const e=null==(t=this.entries)?void 0:t.filter((t=>this.currentYear===t.year));return I`
+      `]}}re([O()],ae.prototype,"entries",2),re([C("#chart")],ae.prototype,"chart",2);var oe=Object.defineProperty,ie=Object.getOwnPropertyDescriptor,se=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?ie(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&oe(e,r,i),i};class ne extends w{constructor(){super(),this.currentYear=(new Date).getUTCFullYear(),this.tooltipText=N('Charts on this page are not comparable in terms of scale, to compare charts please look at the Y axis too!<br/><br/>The expenses and savings may not add up to the total income listed on this page, a portion of the income may not be allocated to an expense nor a saving. You can find further details on the "Monthly Overview" page for that month.'),_("income-chart",$(Ft)()),_("expenses-chart",$(zt)()),_("savings-chart",$(Xt)()),_("distribution-chart",$(Qt)()),_("netto-chart",$(ae)())}render(){var t;const e=null==(t=this.entries)?void 0:t.filter((t=>this.currentYear===t.year));return I`
       <div class="pane">
         <div class="title">
           <h2>Income</h2>
           <div>
-            <h2 class="positive">${Gt(Dt(e))}</h2>
+            <h2 class="positive">${_t(Mt(e))}</h2>
             <div class="tooltip-container">
               ${A(at)}
               <span class="tooltip">${this.tooltipText}</span>
@@ -265,7 +265,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="title">
           <h2>Expenses</h2>
           <div>
-            <h2 class="negative">${Gt(Mt(e))}</h2>
+            <h2 class="negative">${_t(St(e))}</h2>
             <div class="tooltip-container">
               ${A(at)}
               <span class="tooltip">${this.tooltipText}</span>
@@ -279,7 +279,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="title">
           <h2>Savings</h2>
           <div>
-            <h2 class="neutral">${Gt(St(e))}</h2>
+            <h2 class="neutral">${_t(Tt(e))}</h2>
             <div class="tooltip-container">
               ${A(at)}
               <span class="tooltip">${this.tooltipText}</span>
@@ -293,7 +293,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="title">
           <h2>Netto</h2>
           <div>
-            <h2>${Gt(Dt(e)-Mt(e)-St(e))}</h2>
+            <h2>${_t(Mt(e)-St(e)-Tt(e))}</h2>
             <div class="tooltip-container">
               ${A(at)}
               <span class="tooltip">${this.tooltipText}</span>
@@ -380,7 +380,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .tooltip-container:hover .tooltip {
           display: inline-block;
         }
-      `]}}oe([O()],ie.prototype,"currentYear",2),oe([O()],ie.prototype,"entries",2);class se extends w{clickedLogout(){this.dispatchEvent(new CustomEvent("clicked-logout"))}render(){return I`
+      `]}}se([O()],ne.prototype,"currentYear",2),se([O()],ne.prototype,"entries",2);class le extends w{clickedLogout(){this.dispatchEvent(new CustomEvent("clicked-logout"))}render(){return I`
       <div class="header-section">
           ${A(ot)}
           <span class="title">YABAT</span>
@@ -449,7 +449,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .user-dropdown:hover > span {
           display: flex;
         }
-      `]}}class ne extends w{render(){return I`
+      `]}}class ce extends w{render(){return I`
       <div class="moving"></div>
     `}static get styles(){return[x(tt),f`
         :host {
@@ -473,7 +473,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           40% { transform: translateX(0) scaleX(0.4); }
           100% { transform: translateX(100%) scaleX(0.5); }
         }
-      `]}}var le=Object.defineProperty,ce=Object.getOwnPropertyDescriptor;class de extends w{clickedHome(){this.dispatchEvent(new CustomEvent("clicked-home"))}clickedMonthly(){this.dispatchEvent(new CustomEvent("clicked-monthly"))}clickedCompare(){this.dispatchEvent(new CustomEvent("clicked-compare"))}render(){const t=this.state.matches({[V.WINDOW]:U.VIEWING_HOME_PAGE}),e=this.state.matches({[V.WINDOW]:U.VIEWING_MONTHLY_PAGE}),r=this.state.matches({[V.WINDOW]:U.VIEWING_COMPARE_PAGE});return I`
+      `]}}var de=Object.defineProperty,pe=Object.getOwnPropertyDescriptor;class he extends w{clickedHome(){this.dispatchEvent(new CustomEvent("clicked-home"))}clickedMonthly(){this.dispatchEvent(new CustomEvent("clicked-monthly"))}clickedCompare(){this.dispatchEvent(new CustomEvent("clicked-compare"))}render(){const t=this.state.matches({[V.WINDOW]:U.VIEWING_HOME_PAGE}),e=this.state.matches({[V.WINDOW]:U.VIEWING_MONTHLY_PAGE}),r=this.state.matches({[V.WINDOW]:U.VIEWING_COMPARE_PAGE});return I`
       <div
         class="item ${t?"selected":""}"
         @click="${()=>this.clickedHome()}"
@@ -516,7 +516,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           height: var(--gap-normal);
           fill: var(--colors-white);
         }
-      `]}}((t,e,r,a)=>{for(var o,i=a>1?void 0:a?ce(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);a&&i&&le(e,r,i)})([O()],de.prototype,"state",2);var pe=Object.defineProperty,he=Object.getOwnPropertyDescriptor,ge=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?he(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&pe(e,r,i),i};class ve extends w{constructor(){super(...arguments),this.showMenu=!1}selected(t){this.value.innerText=this.options[t],this.dispatchEvent(new CustomEvent("selected",{detail:t}))}toggleMenu(){this.showMenu=!this.showMenu}firstUpdated(){this.container.addEventListener("click",(()=>{this.toggleMenu()}))}render(){return I`
+      `]}}((t,e,r,a)=>{for(var o,i=a>1?void 0:a?pe(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);a&&i&&de(e,r,i)})([O()],he.prototype,"state",2);var ge=Object.defineProperty,ve=Object.getOwnPropertyDescriptor,ue=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?ve(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&ge(e,r,i),i};class me extends w{constructor(){super(...arguments),this.showMenu=!1}selected(t){this.value.innerText=this.options[t],this.dispatchEvent(new CustomEvent("selected",{detail:t}))}toggleMenu(){this.showMenu=!this.showMenu}firstUpdated(){this.container.addEventListener("click",(()=>{this.toggleMenu()}))}render(){return I`
       <div class="container">
         <div class="value-container">
           <p class="value">
@@ -569,7 +569,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .menu p:hover {
           background-color: var(--colors-primary-dark);
         }
-      `]}}ge([O()],ve.prototype,"options",2),ge([O()],ve.prototype,"showMenu",2),ge([C(".container")],ve.prototype,"container",2),ge([C(".menu")],ve.prototype,"menu",2),ge([C(".value")],ve.prototype,"value",2);var ue=Object.defineProperty,me=Object.getOwnPropertyDescriptor,ye=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?me(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&ue(e,r,i),i};class Ee extends w{constructor(){super(...arguments),this.showMenu=!1,this.selectedItems=[],this.selectedItemsValue=[]}selected(t,e){this.selectedItems=this.selectedItems.includes(t)?this.selectedItems.filter((e=>e!==t)):[...this.selectedItems,t],this.dispatchEvent(new CustomEvent("selected",{detail:this.selectedItems})),this.selectedItemsValue=this.selectedItems.map((t=>this.options[t]))}toggleMenu(){this.showMenu=!this.showMenu,this.container.style.border=this.showMenu?"1px solid var(--colors-primary-dark)":"none",this.container.style.borderRadius=this.showMenu?"var(--gap-small) var(--gap-small) 0 0":"var(--gap-small)",this.svg.style.transform=this.showMenu?"rotate(180deg)":"none"}reset(){this.selectedItems=[],this.selectedItemsValue=[],this.dispatchEvent(new CustomEvent("selected",{detail:[]}))}firstUpdated(){this.valueContainer.addEventListener("click",(()=>{this.toggleMenu()}))}render(){return I`
+      `]}}ue([O()],me.prototype,"options",2),ue([O()],me.prototype,"showMenu",2),ue([C(".container")],me.prototype,"container",2),ue([C(".menu")],me.prototype,"menu",2),ue([C(".value")],me.prototype,"value",2);var ye=Object.defineProperty,Ee=Object.getOwnPropertyDescriptor,be=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Ee(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&ye(e,r,i),i};class fe extends w{constructor(){super(...arguments),this.showMenu=!1,this.selectedItems=[],this.selectedItemsValue=[]}selected(t,e){this.selectedItems=this.selectedItems.includes(t)?this.selectedItems.filter((e=>e!==t)):[...this.selectedItems,t],this.dispatchEvent(new CustomEvent("selected",{detail:this.selectedItems})),this.selectedItemsValue=this.selectedItems.map((t=>this.options[t]))}toggleMenu(){this.showMenu=!this.showMenu,this.container.style.border=this.showMenu?"1px solid var(--colors-primary-dark)":"none",this.container.style.borderRadius=this.showMenu?"var(--gap-small) var(--gap-small) 0 0":"var(--gap-small)",this.svg.style.transform=this.showMenu?"rotate(180deg)":"none"}reset(){this.selectedItems=[],this.selectedItemsValue=[],this.dispatchEvent(new CustomEvent("selected",{detail:[]}))}firstUpdated(){this.valueContainer.addEventListener("click",(()=>{this.toggleMenu()}))}render(){return I`
       <div class="container">
 
         <div class="value-container">
@@ -640,7 +640,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .menu-item:hover {
           background-color: var(--colors-grey-lighter);
         }
-      `]}}ye([O()],Ee.prototype,"options",2),ye([O()],Ee.prototype,"showMenu",2),ye([O()],Ee.prototype,"selectedItems",2),ye([O()],Ee.prototype,"selectedItemsValue",2),ye([C(".container")],Ee.prototype,"container",2),ye([C(".value-container")],Ee.prototype,"valueContainer",2),ye([C(".value-container svg")],Ee.prototype,"svg",2),ye([C(".menu")],Ee.prototype,"menu",2);var be=Object.defineProperty,fe=Object.getOwnPropertyDescriptor,Ce=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?fe(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&be(e,r,i),i};class we extends w{constructor(){super(),this.mainCatValue=Ot.INCOME,this.extraCats=[],_("custom-select",$(ve)()),_("custom-select-multiple",$(Ee)())}firstUpdated(){Q(this.amountField,(()=>this.clickedAdd()))}clickedAdd(){var t;const e=Number(this.amountField.value);if(this.mainCatValue&&e){const r={categories:[this.mainCatValue,...this.extraCats],amount:e,description:null==(t=this.descriptionField)?void 0:t.value,year:0,month:dt.JANUARY,id:"filler"};this.dispatchEvent(new CustomEvent("clicked-add",{detail:r})),this.amountField.value="",this.descriptionField.value="",this.resetMultipleSelect()}}clickedMore(){this.dispatchEvent(new CustomEvent("show-recurring"))}changedMainCategory(t){this.mainCatValue=t.detail,this.resetMultipleSelect()}resetMultipleSelect(){var t;null==(t=this.shadowRoot.querySelector("custom-select-multiple"))||t.reset()}render(){return I`
+      `]}}be([O()],fe.prototype,"options",2),be([O()],fe.prototype,"showMenu",2),be([O()],fe.prototype,"selectedItems",2),be([O()],fe.prototype,"selectedItemsValue",2),be([C(".container")],fe.prototype,"container",2),be([C(".value-container")],fe.prototype,"valueContainer",2),be([C(".value-container svg")],fe.prototype,"svg",2),be([C(".menu")],fe.prototype,"menu",2);var Ce=Object.defineProperty,we=Object.getOwnPropertyDescriptor,Ie=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?we(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Ce(e,r,i),i};class Ae extends w{constructor(){super(),this.mainCatValue=Nt.INCOME,this.extraCats=[],_("custom-select",$(me)()),_("custom-select-multiple",$(fe)())}firstUpdated(){Q(this.amountField,(()=>this.clickedAdd()))}clickedAdd(){var t;const e=Number(this.amountField.value);if(this.mainCatValue&&e){const r={categories:[this.mainCatValue,...this.extraCats],amount:e,description:null==(t=this.descriptionField)?void 0:t.value,year:0,month:dt.JANUARY,id:"filler"};this.dispatchEvent(new CustomEvent("clicked-add",{detail:r})),this.amountField.value="",this.descriptionField.value="",this.resetMultipleSelect()}}clickedMore(){this.dispatchEvent(new CustomEvent("show-recurring"))}changedMainCategory(t){this.mainCatValue=t.detail,this.resetMultipleSelect()}resetMultipleSelect(){var t;null==(t=this.shadowRoot.querySelector("custom-select-multiple"))||t.reset()}render(){return I`
       <div class="title">
         <h2>Add Income/Expense</h2>
         <div class="buttons">
@@ -659,13 +659,13 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <p>Main category:</p>
         <custom-select
           @selected="${t=>this.changedMainCategory(t)}"
-          .options="${Object.keys(vt).reduce(((t,e)=>i(i({},t),{[e]:kt(e)})),{})}"
+          .options="${Object.keys(vt).reduce(((t,e)=>i(i({},t),{[e]:Lt(e)})),{})}"
         >
         </custom-select>
         <p>Extra categories:</p>
         <custom-select-multiple
           @selected="${t=>this.extraCats=t.detail}"
-          .options="${Object.keys(this.mainCatValue===Ot.SAVINGS?ft:i(i({},this.mainCatValue===Ot.EXPENSE?i(i({},wt),At):Et),mt)).reduce(((t,e)=>i(i({},t),{[e]:kt(e)})),{})}"
+          .options="${Object.keys(this.mainCatValue===Nt.SAVINGS?ft:i(i(i({},this.mainCatValue===Nt.EXPENSE?i(i({},wt),At):Et),Ot),mt)).reduce(((t,e)=>i(i({},t),{[e]:Lt(e)})),{})}"
         >
         </custom-select-multiple>
         <p>Amount:</p>
@@ -697,9 +697,9 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .secondary.rotate svg {
           transform: rotate(180deg);
         }
-      `]}}Ce([O()],we.prototype,"mainCatValue",2),Ce([O()],we.prototype,"extraCats",2),Ce([C("#amountField")],we.prototype,"amountField",2),Ce([C("#descriptionField")],we.prototype,"descriptionField",2);var Ie=Object.defineProperty,Ae=Object.getOwnPropertyDescriptor;class xe extends w{clickedDelete(){this.dispatchEvent(new CustomEvent("clicked-delete",{detail:this.entry.id}))}render(){return I`
-      <p>${Gt(this.entry.amount)}</p>
-      <p>${this.entry.categories.filter((t=>![Ot.INCOME,Ot.EXPENSE,Ot.SAVINGS].includes(t))).map((t=>kt(t))).join(", ")}</p>
+      `]}}Ie([O()],Ae.prototype,"mainCatValue",2),Ie([O()],Ae.prototype,"extraCats",2),Ie([C("#amountField")],Ae.prototype,"amountField",2),Ie([C("#descriptionField")],Ae.prototype,"descriptionField",2);var xe=Object.defineProperty,Oe=Object.getOwnPropertyDescriptor;class ke extends w{clickedDelete(){this.dispatchEvent(new CustomEvent("clicked-delete",{detail:this.entry.id}))}render(){return I`
+      <p>${_t(this.entry.amount)}</p>
+      <p>${this.entry.categories.filter((t=>![Nt.INCOME,Nt.EXPENSE,Nt.SAVINGS].includes(t))).map((t=>Lt(t))).join(", ")}</p>
       <p>${this.entry.description}</p>
       <p
         class="action-icon"
@@ -739,7 +739,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .action-icon.delete:hover {
           background-color: var(--colors-red-normal);
         }
-      `]}}((t,e,r,a)=>{for(var o,i=a>1?void 0:a?Ae(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);a&&i&&Ie(e,r,i)})([O()],xe.prototype,"entry",2);var Oe=Object.defineProperty,ke=Object.getOwnPropertyDescriptor;class Ne extends w{clickedBack(){this.dispatchEvent(new CustomEvent("go-back"))}clickedAdd(t){this.dispatchEvent(new CustomEvent("clicked-add",{detail:t}))}render(){var t;return I`
+      `]}}((t,e,r,a)=>{for(var o,i=a>1?void 0:a?Oe(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);a&&i&&xe(e,r,i)})([O()],ke.prototype,"entry",2);var Ne=Object.defineProperty,Le=Object.getOwnPropertyDescriptor;class De extends w{clickedBack(){this.dispatchEvent(new CustomEvent("go-back"))}clickedAdd(t){this.dispatchEvent(new CustomEvent("clicked-add",{detail:t}))}render(){var t;return I`
       <div class="title">
         <button class="secondary" @click="${()=>this.clickedBack()}">
           ${A(et)}
@@ -752,9 +752,9 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="list">
           ${this.entries.sort(((t,e)=>e.amount-t.amount)).map((t=>I`
             <div class="entry">
-              <p>${Gt(t.amount)}</p>
+              <p>${_t(t.amount)}</p>
               <p>
-                ${t.categories.filter((t=>![Ot.RECURRING,Ot.EXPENSE].includes(t))).map((t=>kt(t))).join(", ")}
+                ${t.categories.filter((t=>![Nt.RECURRING,Nt.EXPENSE].includes(t))).map((t=>Lt(t))).join(", ")}
               </p>
               <button class="secondary" @click="${()=>this.clickedAdd(t)}">
                 ${A(it)}
@@ -813,7 +813,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           padding: var(--gap-large) var(--gap-huge);
           text-align: center;
         }
-      `]}}((t,e,r,a)=>{for(var o,i=a>1?void 0:a?ke(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);a&&i&&Oe(e,r,i)})([O()],Ne.prototype,"entries",2);var Le=Object.defineProperty,De=Object.getOwnPropertyDescriptor,Me=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?De(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Le(e,r,i),i};class Se extends w{constructor(){super(),this.selectedMonth=(new Date).getMonth(),this.selectedYear=(new Date).getFullYear(),this.filtered=[],this.totalIncome=0,this.totalExpenses=0,this.totalSavings=0,this.totalNetto=0,_("add-entry",$(we)()),_("single-entry",$(xe)()),_("recurring-component",$(Ne)())}firstUpdated(){var t;null==(t=this.input)||t.addEventListener("change",(t=>{const e=this.input.value.split("-");this.selectedYear=Number(e[0]),this.selectedMonth=Number(e[1])-1}))}updated(){this.handleBarChart(),this.handlePieChart()}handlePieChart(){var t;if(!this.pieChart)return;const e=_t(this.filtered),r={type:"doughnut",data:{labels:[...Object.keys(e).map((t=>kt(t)))],datasets:[{data:[...Object.values(e).map((t=>t.amount))],backgroundColor:[...Object.values(e).map((t=>t.color))],borderColor:"#444",borderWidth:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{},plugins:{legend:{display:!0,position:"left",align:"end"},title:{display:!0,text:"Expenses Distribution",color:"#FFF",font:{size:20},align:"start",padding:0}}}};null==(t=this.pieChartInstance)||t.destroy(),this.pieChartInstance=new k(this.pieChart,r)}handleBarChart(){var t;if(!this.barChart)return;const e={borderColor:"#444",borderWidth:1,barPercentage:.9,categoryPercentage:.9},r={type:"bar",data:{labels:[""],datasets:[i({data:[this.totalIncome],label:"Income",backgroundColor:"#1DCA7F",hoverBackgroundColor:"#0A0",stack:"0"},e),i({data:[this.totalExpenses],label:"Expenses",backgroundColor:"#FF0000",hoverBackgroundColor:"#AA0000",stack:"1"},e),i({data:[this.totalSavings],label:"Savings",backgroundColor:"#6898AE",hoverBackgroundColor:"#6898AE",stack:"1"},e),i({data:[this.totalNetto>0?this.totalNetto:0],label:"Netto",backgroundColor:"#666",hoverBackgroundColor:"#FFF",stack:"1"},e)]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.barChartInstance)||t.destroy(),this.barChartInstance=new k(this.barChart,r)}scrollToAdd(){var t;null==(t=this.addPane)||t.scrollIntoView({block:"center",behavior:"smooth"})}clickedAdd(t){this.dispatchEvent(new CustomEvent("clicked-add",{detail:i(i({},t.detail),{year:this.selectedYear,month:Object.keys(dt)[this.selectedMonth]})}))}clickedDelete(t){this.dispatchEvent(new CustomEvent("clicked-delete",{detail:t.detail}))}showRecurring(){this.addContainer.style.transform="translate(calc(-50% - var(--gap-huge)), 0)"}showAdd(){this.addContainer.style.transform="translate(0, 0)"}render(){const t=`${this.selectedMonth<9?"0":""}${this.selectedMonth+1}`;var e;return this.filtered=this.entries.filter((t=>t.year===this.selectedYear&&t.month===Object.keys(dt)[this.selectedMonth])).sort(((t,e)=>t.categories.toString().localeCompare(e.categories.toString()))),this.totalIncome=Dt(this.filtered),this.totalExpenses=Mt(this.filtered),this.totalSavings=St(this.filtered),this.totalNetto=Dt(e=this.filtered)-Mt(e)-St(e),I`
+      `]}}((t,e,r,a)=>{for(var o,i=a>1?void 0:a?Le(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);a&&i&&Ne(e,r,i)})([O()],De.prototype,"entries",2);var Ge=Object.defineProperty,Me=Object.getOwnPropertyDescriptor,Se=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Me(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Ge(e,r,i),i};class Te extends w{constructor(){super(),this.selectedMonth=(new Date).getMonth(),this.selectedYear=(new Date).getFullYear(),this.filtered=[],this.totalIncome=0,this.totalExpenses=0,this.totalSavings=0,this.totalNetto=0,_("add-entry",$(Ae)()),_("single-entry",$(ke)()),_("recurring-component",$(De)())}firstUpdated(){var t;null==(t=this.input)||t.addEventListener("change",(t=>{const e=this.input.value.split("-");this.selectedYear=Number(e[0]),this.selectedMonth=Number(e[1])-1}))}updated(){this.handleBarChart(),this.handlePieChart()}handlePieChart(){var t;if(!this.pieChart)return;const e=Pt(this.filtered),r={type:"doughnut",data:{labels:[...Object.keys(e).map((t=>Lt(t)))],datasets:[{data:[...Object.values(e).map((t=>t.amount))],backgroundColor:[...Object.values(e).map((t=>t.color))],borderColor:"#444",borderWidth:1}]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{},plugins:{legend:{display:!0,position:"left",align:"end"},title:{display:!0,text:"Expenses Distribution",color:"#FFF",font:{size:20},align:"start",padding:0}}}};null==(t=this.pieChartInstance)||t.destroy(),this.pieChartInstance=new k(this.pieChart,r)}handleBarChart(){var t;if(!this.barChart)return;const e={borderColor:"#444",borderWidth:1,barPercentage:.9,categoryPercentage:.9},r={type:"bar",data:{labels:[""],datasets:[i({data:[this.totalIncome],label:"Income",backgroundColor:"#1DCA7F",hoverBackgroundColor:"#0A0",stack:"0"},e),i({data:[this.totalExpenses],label:"Expenses",backgroundColor:"#FF0000",hoverBackgroundColor:"#AA0000",stack:"1"},e),i({data:[this.totalSavings],label:"Savings",backgroundColor:"#6898AE",hoverBackgroundColor:"#6898AE",stack:"1"},e),i({data:[this.totalNetto>0?this.totalNetto:0],label:"Netto",backgroundColor:"#666",hoverBackgroundColor:"#FFF",stack:"1"},e)]},options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!1}}}};null==(t=this.barChartInstance)||t.destroy(),this.barChartInstance=new k(this.barChart,r)}scrollToAdd(){var t;null==(t=this.addPane)||t.scrollIntoView({block:"center",behavior:"smooth"})}clickedAdd(t){this.dispatchEvent(new CustomEvent("clicked-add",{detail:i(i({},t.detail),{year:this.selectedYear,month:Object.keys(dt)[this.selectedMonth]})}))}clickedDelete(t){this.dispatchEvent(new CustomEvent("clicked-delete",{detail:t.detail}))}showRecurring(){this.addContainer.style.transform="translate(calc(-50% - var(--gap-huge)), 0)"}showAdd(){this.addContainer.style.transform="translate(0, 0)"}render(){const t=`${this.selectedMonth<9?"0":""}${this.selectedMonth+1}`;var e;return this.filtered=this.entries.filter((t=>t.year===this.selectedYear&&t.month===Object.keys(dt)[this.selectedMonth])).sort(((t,e)=>t.categories.toString().localeCompare(e.categories.toString()))),this.totalIncome=Mt(this.filtered),this.totalExpenses=St(this.filtered),this.totalSavings=Tt(this.filtered),this.totalNetto=Mt(e=this.filtered)-St(e)-Tt(e),I`
       <div class="filter-container">
         <div>
           <p>Select month:</p>
@@ -831,13 +831,13 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
 
       <div class="pane overview">
         <p>Income</p>
-        <p class="positive large">${Gt(this.totalIncome)}</p>
+        <p class="positive large">${_t(this.totalIncome)}</p>
         <p>Expenses</p>
-        <p class="negative large">${Gt(this.totalExpenses)}</p>
+        <p class="negative large">${_t(this.totalExpenses)}</p>
         <p>Savings</p>
-        <p class="neutral large">${Gt(this.totalSavings)}</p>
+        <p class="neutral large">${_t(this.totalSavings)}</p>
         <p>Netto</p>
-        <p class="large">${Gt(this.totalNetto)}</p>
+        <p class="large">${_t(this.totalNetto)}</p>
       </div>
 
       ${this.totalExpenses||this.totalIncome?I`
@@ -871,7 +871,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           <recurring-component
             @go-back="${()=>this.showAdd()}"
             @clicked-add="${t=>this.clickedAdd(t)}"
-            .entries="${this.entries.filter((t=>t.categories.includes(Ot.RECURRING))).filter(((t,e,r)=>r.filter((e=>{return r=e,t.categories.every((t=>Nt(r,t)));var r})).every((e=>Date.parse(`1 ${t.month} ${t.year}`)>=Date.parse(`1 ${e.month} ${e.year}`))))).filter((t=>!this.filtered.find((e=>e.categories.every((e=>t.categories.includes(e)))))))}"
+            .entries="${this.entries.filter((t=>t.categories.includes(Nt.RECURRING))).filter(((t,e,r)=>r.filter((e=>{return r=e,t.categories.every((t=>Dt(r,t)));var r})).every((e=>Date.parse(`1 ${t.month} ${t.year}`)>=Date.parse(`1 ${e.month} ${e.year}`))))).filter((t=>!this.filtered.find((e=>e.categories.every((e=>t.categories.includes(e)))))))}"
           ></recurring-component>
         </div>
       </div>
@@ -882,7 +882,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="overview-section income">
           <h3>Income</h3>
           <div class="list">
-            ${this.filtered.filter((t=>t.categories.includes(Ot.INCOME))).sort(((t,e)=>e.amount-t.amount)).map((t=>I`
+            ${this.filtered.filter((t=>t.categories.includes(Nt.INCOME))).sort(((t,e)=>e.amount-t.amount)).map((t=>I`
               <single-entry
                 .entry="${t}"
                 @clicked-delete="${t=>this.clickedDelete(t)}"
@@ -894,7 +894,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="overview-section savings">
           <h3>Savings</h3>
           <div class="list">
-            ${this.filtered.filter((t=>t.categories.includes(Ot.SAVINGS))).sort(((t,e)=>e.amount-t.amount)).map((t=>I`
+            ${this.filtered.filter((t=>t.categories.includes(Nt.SAVINGS))).sort(((t,e)=>e.amount-t.amount)).map((t=>I`
               <single-entry
                 .entry="${t}"
                 @clicked-delete="${t=>this.clickedDelete(t)}"
@@ -906,7 +906,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         <div class="overview-section expenses">
           <h3>Expenses</h3>
           <div class="list">
-            ${this.filtered.filter((t=>t.categories.includes(Ot.EXPENSE))).map((t=>I`
+            ${this.filtered.filter((t=>t.categories.includes(Nt.EXPENSE))).map((t=>I`
               <single-entry
                 .entry="${t}"
                 @clicked-delete="${t=>this.clickedDelete(t)}"
@@ -991,11 +991,11 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         .addContainer > div {
           flex: 1 1;
         }
-      `]}}Me([C("#dateInput")],Se.prototype,"input",2),Me([C("#addPane")],Se.prototype,"addPane",2),Me([C("#bar-chart")],Se.prototype,"barChart",2),Me([C("#pie-chart")],Se.prototype,"pieChart",2),Me([C(".addContainer")],Se.prototype,"addContainer",2),Me([O()],Se.prototype,"entries",2),Me([O()],Se.prototype,"selectedMonth",2),Me([O()],Se.prototype,"selectedYear",2),Me([O()],Se.prototype,"filtered",2),Me([O()],Se.prototype,"totalIncome",2),Me([O()],Se.prototype,"totalExpenses",2),Me([O()],Se.prototype,"totalSavings",2),Me([O()],Se.prototype,"totalNetto",2);var Ge=Object.defineProperty,Te=Object.getOwnPropertyDescriptor,_e=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Te(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Ge(e,r,i),i};class $e extends w{render(){return I`
+      `]}}Se([C("#dateInput")],Te.prototype,"input",2),Se([C("#addPane")],Te.prototype,"addPane",2),Se([C("#bar-chart")],Te.prototype,"barChart",2),Se([C("#pie-chart")],Te.prototype,"pieChart",2),Se([C(".addContainer")],Te.prototype,"addContainer",2),Se([O()],Te.prototype,"entries",2),Se([O()],Te.prototype,"selectedMonth",2),Se([O()],Te.prototype,"selectedYear",2),Se([O()],Te.prototype,"filtered",2),Se([O()],Te.prototype,"totalIncome",2),Se([O()],Te.prototype,"totalExpenses",2),Se([O()],Te.prototype,"totalSavings",2),Se([O()],Te.prototype,"totalNetto",2);var _e=Object.defineProperty,$e=Object.getOwnPropertyDescriptor,Pe=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?$e(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&_e(e,r,i),i};class Re extends w{render(){return I`
       <div>
         <canvas id="chart"></canvas>
       </div>
-    `}updated(){var t;if(!this.chart)return;const e=function(t,e){var r;let a={};for(const o of Object.values(dt)){const i={};for(const a of null!=e?e:[]){const e=Lt(t.filter((t=>t.month===o.toUpperCase())),a);i[a]={amount:e,color:null!=(r=Tt[a])?r:"white"}}a[o]=i,t=t.filter((t=>t.month!==o.toUpperCase()))}return a}(this.entries,this.categories),r={borderColor:"#444",borderWidth:1,barPercentage:.9,categoryPercentage:.9,hoverBackgroundColor:"white"},a={labels:Object.keys(e).map((t=>gt(t))),datasets:[...Object.keys(Object.values(e)[0]).map((t=>i({data:Object.values(e).map((e=>e[t].amount)),label:kt(t),backgroundColor:Object.values(e)[0][t].color,stack:"0"},r)))]};a.datasets=a.datasets.length?a.datasets:[{}];const o={type:"bar",data:a,options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!!a.datasets[0].label}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,o)}static get styles(){return[x(tt),f`
+    `}updated(){var t;if(!this.chart)return;const e=function(t,e){var r;let a={};for(const o of Object.values(dt)){const i={};for(const a of null!=e?e:[]){const e=Gt(t.filter((t=>t.month===o.toUpperCase())),a);i[a]={amount:e,color:null!=(r=$t[a])?r:"white"}}a[o]=i,t=t.filter((t=>t.month!==o.toUpperCase()))}return a}(this.entries,this.categories),r={borderColor:"#444",borderWidth:1,barPercentage:.9,categoryPercentage:.9,hoverBackgroundColor:"white"},a={labels:Object.keys(e).map((t=>gt(t))),datasets:[...Object.keys(Object.values(e)[0]).map((t=>i({data:Object.values(e).map((e=>e[t].amount)),label:Lt(t),backgroundColor:Object.values(e)[0][t].color,stack:"0"},r)))]};a.datasets=a.datasets.length?a.datasets:[{}];const o={type:"bar",data:a,options:{color:"#FFF",responsive:!0,maintainAspectRatio:!1,layout:{padding:0},plugins:{legend:{display:!!a.datasets[0].label}}}};null==(t=this.chartInstance)||t.destroy(),this.chartInstance=new k(this.chart,o)}static get styles(){return[x(tt),f`
         :host {
           display: flex;
         }
@@ -1005,12 +1005,12 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         canvas {
           width: 100% !important;
         }
-      `]}}_e([O()],$e.prototype,"entries",2),_e([O()],$e.prototype,"categories",2),_e([C("#chart")],$e.prototype,"chart",2);var Pe=Object.defineProperty,Re=Object.getOwnPropertyDescriptor,Ve=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?Re(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Pe(e,r,i),i};class je extends w{constructor(){super(),this.currentYear=(new Date).getUTCFullYear(),_("compare-chart",$($e)()),_("custom-select-multiple",$(Ee)())}render(){var t;const e=null==(t=this.entries)?void 0:t.filter((t=>this.currentYear===t.year));return I`
+      `]}}Pe([O()],Re.prototype,"entries",2),Pe([O()],Re.prototype,"categories",2),Pe([C("#chart")],Re.prototype,"chart",2);var Ve=Object.defineProperty,je=Object.getOwnPropertyDescriptor,Fe=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?je(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Ve(e,r,i),i};class He extends w{constructor(){super(),this.currentYear=(new Date).getUTCFullYear(),_("compare-chart",$(Re)()),_("custom-select-multiple",$(fe)())}render(){var t;const e=null==(t=this.entries)?void 0:t.filter((t=>this.currentYear===t.year));return I`
       <div class="pane">
         <h2>Select which categories to compare</h2>
         <custom-select-multiple
           @selected="${t=>this.selectedCategories=t.detail}"
-          .options="${Object.keys(i({},Tt)).reduce(((t,e)=>i(i({},t),{[e]:kt(e)})),{})}"
+          .options="${Object.keys(i({},$t)).reduce(((t,e)=>i(i({},t),{[e]:Lt(e)})),{})}"
         >
         </custom-select-multiple>
       </div>
@@ -1040,7 +1040,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         h2 {
           padding-bottom: var(--gap-normal);
         }
-      `]}}Ve([O()],je.prototype,"currentYear",2),Ve([O()],je.prototype,"entries",2),Ve([O()],je.prototype,"selectedCategories",2);var Fe=Object.defineProperty,He=Object.getOwnPropertyDescriptor,Ue=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?He(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Fe(e,r,i),i};class We extends w{constructor(){super(),k.register(...L),_("login-page",$(ct)()),_("home-page",$(ie)()),_("monthly-page",$(Se)()),_("compare-page",$(je)()),_("page-header",$(se)()),_("loading-bar",$(ne)()),_("sidebar-component",$(de)()),this.machine=D(q).withContext({data:[]}),this.actor=M(this.machine).onTransition((t=>console.log("STATE: ",t.value))),this.subscribe("state",S(this.actor)),this.subscribe("entries",S(this.actor).pipe(G((t=>t.context.data)))),this.actor.start()}clickedLogin(t){this.actor.send(new z(t.detail.email,t.detail.password))}clickedLogout(){this.actor.send(new B)}clickedHome(){this.actor.send(new Y)}clickedMonthly(){this.actor.send(new K)}clickedCompare(){this.actor.send(new X)}clickedAddEntry(t){this.actor.send(new Z(t.detail))}clickedDelete(t){this.actor.send(new J(t.detail))}render(){var t,e,r,a,o,i,s,n,l;return I`
+      `]}}Fe([O()],He.prototype,"currentYear",2),Fe([O()],He.prototype,"entries",2),Fe([O()],He.prototype,"selectedCategories",2);var Ue=Object.defineProperty,We=Object.getOwnPropertyDescriptor,ze=(t,e,r,a)=>{for(var o,i=a>1?void 0:a?We(e,r):e,s=t.length-1;s>=0;s--)(o=t[s])&&(i=(a?o(e,r,i):o(i))||i);return a&&i&&Ue(e,r,i),i};class Be extends w{constructor(){super(),k.register(...L),_("login-page",$(ct)()),_("home-page",$(ne)()),_("monthly-page",$(Te)()),_("compare-page",$(He)()),_("page-header",$(le)()),_("loading-bar",$(ce)()),_("sidebar-component",$(he)()),this.machine=D(q).withContext({data:[]}),this.actor=G(this.machine).onTransition((t=>console.log("STATE: ",t.value))),this.subscribe("state",M(this.actor)),this.subscribe("entries",M(this.actor).pipe(S((t=>t.context.data)))),this.actor.start()}clickedLogin(t){this.actor.send(new z(t.detail.email,t.detail.password))}clickedLogout(){this.actor.send(new B)}clickedHome(){this.actor.send(new Y)}clickedMonthly(){this.actor.send(new K)}clickedCompare(){this.actor.send(new X)}clickedAddEntry(t){this.actor.send(new Z(t.detail))}clickedDelete(t){this.actor.send(new J(t.detail))}render(){var t,e,r,a,o,i,s,n,l;return I`
 
       ${(null==(t=this.state)?void 0:t.matches({[V.WINDOW]:U.LOGGING_OUT}))||(null==(e=this.state)?void 0:e.matches({[V.WINDOW]:U.LOGGING_IN}))||(null==(r=this.state)?void 0:r.matches({[V.DATA]:F.ADDING_DATA}))||(null==(a=this.state)?void 0:a.matches({[V.DATA]:F.LOADING_DATA}))?I`
       
@@ -1134,4 +1134,4 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
         home-page {
           flex: 1 0;
         }
-      `]}}Ue([O()],We.prototype,"state",2),Ue([O()],We.prototype,"entries",2),T({apiKey:"AIzaSyAL-nNMVRScFecxz2HymYpxtr_o8mO3KXA",authDomain:"yabat-e3d19.firebaseapp.com",projectId:"yabat-e3d19",storageBucket:"yabat-e3d19.appspot.com",messagingSenderId:"658164896532",appId:"1:658164896532:web:3b4d16d313681ef1032801"}),_("app-root",$(We)());
+      `]}}ze([O()],Be.prototype,"state",2),ze([O()],Be.prototype,"entries",2),T({apiKey:"AIzaSyAL-nNMVRScFecxz2HymYpxtr_o8mO3KXA",authDomain:"yabat-e3d19.firebaseapp.com",projectId:"yabat-e3d19",storageBucket:"yabat-e3d19.appspot.com",messagingSenderId:"658164896532",appId:"1:658164896532:web:3b4d16d313681ef1032801"}),_("app-root",$(Be)());
