@@ -154,7 +154,7 @@ export class HomePageComponent extends RxLitElement {
           :host {
             grid-template-columns: 1fr;
           }
-          .distribution {
+          .distribution, .filter-container {
             grid-column: 1 / 2;
           }
         }
@@ -163,6 +163,7 @@ export class HomePageComponent extends RxLitElement {
           display: flex;
           flex-direction: column;
           gap: var(--gap-small);
+          max-height: 250px;
         }
         
         .pane > *:last-child {
