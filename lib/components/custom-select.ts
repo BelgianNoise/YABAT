@@ -67,6 +67,7 @@ export class CustomSelectComponent extends RxLitElement {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: var(--gap-small);
         }
         .value-container svg {
           height: 20px;

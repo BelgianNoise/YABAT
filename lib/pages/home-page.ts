@@ -1,4 +1,4 @@
-import { html, css, CSSResult, TemplateResult, unsafeCSS, state } from 'lit-element';
+import { html, css, CSSResult, TemplateResult, unsafeCSS, state, query } from 'lit-element';
 import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
@@ -12,11 +12,13 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { Help } from '../styles/svgs';
 import { DistributionChartComponent } from '../components/home/distribution-chart';
 import { NettoChartComponent } from '../components/home/netto-chart';
+import { CustomSelectComponent } from '../components/custom-select';
 
 export class HomePageComponent extends RxLitElement {
 
-  @state() currentYear = new Date().getUTCFullYear();
+  @state() selectedYear: number;
   @state() entries: Entry[];
+  @query('#yearSelection') yearInput: CustomSelectComponent;
 
   private tooltipText = unsafeHTML('Charts on this page are not comparable in terms of scale, to compare charts please look at the Y axis too!<br/><br/>The expenses and savings may not add up to the total income listed on this page, a portion of the income may not be allocated to an expense nor a saving. You can find further details on the "Monthly Overview" page for that month.');
 
@@ -27,13 +29,35 @@ export class HomePageComponent extends RxLitElement {
     define('savings-chart', hydrate(SavingsChartComponent)());
     define('distribution-chart', hydrate(DistributionChartComponent)());
     define('netto-chart', hydrate(NettoChartComponent)());
+    define('custom-select', hydrate(CustomSelectComponent)());
+  }
+
+  changeSelectedYear(year: number) {
+    if (this.yearInput) {
+      this.yearInput.selected(year.toString());
+    } else {
+      // stupid hacky solution
+      setTimeout(() => this.changeSelectedYear(year), 100);
+    }
   }
 
   render(): TemplateResult {
 
-    const filtered = this.entries?.filter(e => this.currentYear === e.year);
+    const availableYears = [ ... new Set([ ... this.entries?.map(e => e.year), new Date().getUTCFullYear() ]) ];
+    if (!this.selectedYear) this.changeSelectedYear(Math.max(... availableYears));
+
+    const filtered = this.entries?.filter(e => this.selectedYear === e.year);
 
     return html`
+      <div class="filter-container">
+        <p>Show overview of year:</p>
+        <custom-select id="yearSelection"
+          @selected="${(ev: CustomEvent<string>) => this.selectedYear = +ev.detail}"
+          .options="${availableYears.reduce((acc, curr) => ({ ... acc, [curr]: curr }), {})}"
+        >
+        </custom-select>
+      </div>
+
       <div class="pane">
         <div class="title">
           <h2>Income</h2>
@@ -111,6 +135,14 @@ export class HomePageComponent extends RxLitElement {
           grid-column-gap: var(--gap-large);
           grid-row-gap: var(--gap-large);
           grid-auto-rows: 1fr;
+        }
+
+        .filter-container {
+          grid-column: 1 / 3;
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          gap: var(--gap-normal);
         }
 
         .distribution {
