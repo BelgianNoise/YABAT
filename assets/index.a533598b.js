@@ -398,7 +398,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           :host {
             grid-template-columns: 1fr;
           }
-          .distribution {
+          .distribution, .filter-container {
             grid-column: 1 / 2;
           }
         }
@@ -407,6 +407,7 @@ var t=Object.defineProperty,e=Object.prototype.hasOwnProperty,r=Object.getOwnPro
           display: flex;
           flex-direction: column;
           gap: var(--gap-small);
+          max-height: 250px;
         }
         
         .pane > *:last-child {
