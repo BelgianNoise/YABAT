@@ -5,7 +5,7 @@ import { defaultCSS } from '../../styles/default';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsrednormal, colorswhite } from '../../styles/colors';
 import { Month, monthNames, shortenMonth } from '../../util/models/month';
-import { totalExpenses } from '../../util/helper';
+import { totalExpenses, totalInvestmentsExpenses } from '../../util/helper';
 
 export class ExpensesChartComponent extends RxLitElement {
 
@@ -24,23 +24,42 @@ export class ExpensesChartComponent extends RxLitElement {
   }
 
   updated(): void {
-    const calculatedNumbers = {};
+    const calculatedNumbers: Record<string, { exp: number; inv: number }> = {};
     Object.keys(Month).forEach((m) => {
       const entries = this.entries.filter(e => e.month === m);
-      calculatedNumbers[m] = totalExpenses(entries);
+      const inv = totalInvestmentsExpenses(entries);
+      calculatedNumbers[m] = {
+        exp: totalExpenses(entries) - inv,
+        inv,
+      };
     });
     if (!this.chart) return;
     const data = {
       labels: monthNames.map(m => shortenMonth(m as Month)),
-      datasets: [{ 
-        data: Object.values(calculatedNumbers) as number[],
-        backgroundColor: colorsrednormal,
-        hoverBackgroundColor: colorswhite,
-        borderColor: colorsgreylight,
-        borderWidth: 1,
-        barPercentage: 1,
-        categoryPercentage: 1,
-      }],
+      datasets: [
+        { 
+          data: Object.values(calculatedNumbers).map((n) => n.exp),
+          backgroundColor: colorsrednormal,
+          hoverBackgroundColor: colorswhite,
+          borderColor: colorsgreylight,
+          borderWidth: 1,
+          barPercentage: 1,
+          categoryPercentage: 1,
+          label: 'Expenses',
+          stack: '0',
+        },
+        {
+          data: Object.values(calculatedNumbers).map((n) => n.inv),
+          backgroundColor: 'purple',
+          hoverBackgroundColor: colorswhite,
+          borderColor: colorsgreylight,
+          borderWidth: 1,
+          barPercentage: 1,
+          categoryPercentage: 1,
+          label: 'Investments',
+          stack: '0',
+        }
+      ],
     };
     const config: ChartConfiguration = {
       type: 'bar',

@@ -22,20 +22,28 @@ export function filterByCategory(entries: Entry[], cat: CategoryType): Entry[] {
   return filterByCategories(entries, [ cat ]);
 }
 
-export function getTotal(entries: Entry[], cat?: CategoryType): number {
-  return entries.map((e) => cat ? hasCategory(e, cat) ? e.amount : 0 : e.amount).reduce((p, c) => p + c, 0);
+export function getTotal(entries: Entry[], cats?: CategoryType[]): number {
+  return entries.map((e) => cats ? hasCategories(e, cats) ? e.amount : 0 : e.amount).reduce((p, c) => p + c, 0);
 }
 
 export function totalIncome(entries: Entry[]): number {
-  return getTotal(entries, Category.INCOME);
+  return getTotal(entries, [ Category.INCOME ]);
+}
+
+export function totalInvestmentsIncome(entries: Entry[]): number {
+  return getTotal(entries, [ Category.INCOME, Category.INVESTMENT ]);
 }
 
 export function totalExpenses(entries: Entry[]): number {
-  return getTotal(entries, Category.EXPENSE);
+  return getTotal(entries, [ Category.EXPENSE ]);
+}
+
+export function totalInvestmentsExpenses(entries: Entry[]): number {
+  return getTotal(entries, [ Category.EXPENSE, Category.INVESTMENT ]);
 }
 
 export function totalSavings(entries: Entry[]): number {
-  return getTotal(entries, Category.SAVINGS);
+  return getTotal(entries, [ Category.SAVINGS ]);
 }
 
 export function totalNetto(entries: Entry[]): number {
@@ -59,13 +67,14 @@ export const colorMappings = {
   [Category.LEISURE]: 'lightyellow',
   [Category.CLOTHES]: 'brown',
   [Category.TRANSPORTATION]: 'yellow',
+  [Category.INVESTMENT]: 'purple',
   [Category.SUBSCRIPTION]: colorsprimarydark,
 };
 
 export function groupForPieChart(entries: Entry[]): Record<string, { amount: number, color: string }> {
   let result = {};
   for(const [cat, color] of Object.entries(colorMappings)) {
-    const total = getTotal(entries, Category[cat]);
+    const total = getTotal(entries, [ Category[cat] ]);
     if (total > 0) {
       result[cat] = { amount: total, color };
       entries = entries.filter((e) => !hasCategory(e, Category[cat]));
@@ -75,7 +84,7 @@ export function groupForPieChart(entries: Entry[]): Record<string, { amount: num
   result = Object.entries(result)
     .sort(([,a],[,b]) => (b as { amount: number }).amount - (a as { amount: number }).amount)
     .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
-  result[Category.OTHER] = { amount: getTotal(entries, Category.EXPENSE), color: colorsgreylight };
+  result[Category.OTHER] = { amount: getTotal(entries, [ Category.EXPENSE ]), color: colorsgreylight };
   return result;
 }
 
@@ -85,7 +94,7 @@ export function groupForComparePage(entries: Entry[], categories: CategoryType[]
     const temp = {};
     for (const cat of categories ?? []) {
       const monthEntries = entries.filter((e) => e.month === mo.toUpperCase());
-      const total = getTotal(monthEntries, cat);
+      const total = getTotal(monthEntries, [ cat ]);
       temp[cat] = { amount: total, color: colorMappings[cat] ?? 'white' };
     }
     result[mo] = temp;

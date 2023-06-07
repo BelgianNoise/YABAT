@@ -6,8 +6,6 @@ export enum MainCategory {
 
 export enum InvestmentCategory {
   INVESTMENT = 'INVESTMENT',
-  STOCKS = 'STOCKS',
-  CRYPTO = 'CRYPTO',
 }
 
 export enum IncomeCategory {

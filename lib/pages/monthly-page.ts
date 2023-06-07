@@ -3,7 +3,7 @@ import { RxLitElement } from 'rx-lit';
 import { Entry } from '../util/models/entry';
 import { defaultCSS } from '../styles/default';
 import { Month } from '../util/models/month';
-import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalNetto } from '../util/helper';
+import { groupForPieChart, hasCategories, parseToOutput, totalExpenses, totalIncome, totalSavings, totalNetto, totalInvestmentsIncome, totalInvestmentsExpenses } from '../util/helper';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { colorsgreylight, colorsprimarylight, colorsreddark, colorsrednormal, colorssecondary, colorswhite } from '../styles/colors';
 import { Category, convertCategoryToString } from '../util/models/category';
@@ -27,7 +27,9 @@ export class MonthlyPageComponent extends RxLitElement {
 
   @state() filtered: Entry[] = [];
   @state() totalIncome: number = 0;
+  @state() totalInvestmentIncome: number = 0;
   @state() totalExpenses: number = 0;
+  @state() totalInvestmentExpenses: number = 0;
   @state() totalSavings: number = 0;
   @state() totalNetto: number = 0;
   private barChartInstance: Chart;
@@ -108,15 +110,23 @@ export class MonthlyPageComponent extends RxLitElement {
       labels: [ '' ],
       datasets: [
         { 
-          data: [ this.totalIncome ],
+          data: [ this.totalIncome - this.totalInvestmentIncome ],
           label: 'Income',
           backgroundColor: colorsprimarylight,
           hoverBackgroundColor: '#0A0',
           stack: '0',
           ...datasetoptions,
         },
+        { 
+          data: [ this.totalInvestmentIncome ],
+          label: 'Income from investments',
+          backgroundColor: 'purple',
+          hoverBackgroundColor: 'darkpurple',
+          stack: '0',
+          ...datasetoptions,
+        },
         {
-          data: [ this.totalExpenses ],
+          data: [ this.totalExpenses - this.totalInvestmentExpenses ],
           label: 'Expenses',
           backgroundColor: colorsrednormal,
           hoverBackgroundColor: colorsreddark,
@@ -128,6 +138,14 @@ export class MonthlyPageComponent extends RxLitElement {
           label: 'Savings',
           backgroundColor: colorssecondary,
           hoverBackgroundColor: colorssecondary,
+          stack: '1',
+          ...datasetoptions,
+        },
+        {
+          data: [ this.totalInvestmentExpenses ],
+          label: 'Investments',
+          backgroundColor: 'purple',
+          hoverBackgroundColor: 'darkpurple',
           stack: '1',
           ...datasetoptions,
         },
@@ -187,7 +205,9 @@ export class MonthlyPageComponent extends RxLitElement {
     this.filtered = this.entries.filter((e: Entry) => e.year === this.selectedYear && e.month === Object.keys(Month)[this.selectedMonth])
       .sort((e1, e2) => e1.categories.toString().localeCompare(e2.categories.toString()));
     this.totalIncome = totalIncome(this.filtered);
+    this.totalInvestmentIncome = totalInvestmentsIncome(this.filtered);
     this.totalExpenses = totalExpenses(this.filtered);
+    this.totalInvestmentExpenses = totalInvestmentsExpenses(this.filtered);
     this.totalSavings = totalSavings(this.filtered);
     this.totalNetto = totalNetto(this.filtered);
 
